@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
+/*   Updated: 2023/05/04 00:51:57 by asoler           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	verify_data(char **args)
@@ -29,7 +41,8 @@ int	init_philos(t_main	*data)
 	{
 		data->dinner.philo[id].id = id;
 		data->actual_id = id;
-		if (pthread_create(&data->dinner.philo[id].philosopher, NULL, table, data))
+		if (pthread_create(&data->dinner.philo[id].philosopher, \
+			NULL, table, data))
 			return (printf("Philo threat %d fail\n", id));
 		id++;
 	}

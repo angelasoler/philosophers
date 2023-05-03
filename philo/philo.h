@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
+/*   Updated: 2023/05/04 00:53:11 by asoler           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # include <stdio.h>
 # include <stdlib.h>
@@ -27,7 +39,6 @@ typedef struct s_dinner
 	pthread_mutex_t	*fork;
 	t_philo			*philo;
 }	t_dinner;
-
 
 typedef struct s_main
 {
