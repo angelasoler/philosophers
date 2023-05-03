@@ -1,10 +1,14 @@
-name=philo
+NAME=philo
 
-CCW=gcc -Wall -Werror -Wextra
+CCW=gcc -Wall -Werror -Wextra -g3
 
 THREAD_FLAG=-lpthread
 
-SRC=philo.c
+SRC=philo.c \
+	lib_utils.c \
+	ft_atoi.c \
+	init_utils.c \
+	dinner_utils.c
 
 OBJ=$(SRC:.c=.o)
 
