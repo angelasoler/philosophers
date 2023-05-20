@@ -23,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build project
-      run: make -C philo
+      run: make
   valgrind:
     name: Valgrind
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
     - name: Install valgrind
       run: sudo apt install valgrind -y
     - name: Build project
-      run: make -C philo
+      run: make 
     - name: Exec binary with valgrind
-      run: valgrind philo/philo 3 3 3 3
+      run: valgrind ./philo 3 3 3 3
       

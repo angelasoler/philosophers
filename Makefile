@@ -1,23 +1,31 @@
-BUILD=docker build -t philo .
+NAME=philo
 
-RUN=docker run -it --name=philo \
-			--mount type=bind,source=${PWD},target=/src \
-			philo:1.0 bash
+CCW=gcc -Wall -Werror -Wextra -g3
 
-EXEC=docker exec -ti philo bash
+THREAD_FLAG=-lpthread
 
-all: image
-	gcc -pthread test.c && ./a.out
+SRC=philo.c \
+	lib_utils.c \
+	ft_atoi.c \
+	init_utils.c \
+	dinner_utils.c
 
-run: build
-	$(RUN)
+OBJ=$(SRC:.c=.o)
 
-build:
-	$(BUILD)
+all: $(NAME)
 
-start: 
-	docker start philo
+$(NAME): $(OBJ)
+	$(CCW) $(OBJ) $(THREAD_FLAG) -o $(NAME)
 
-image: start
-	$(EXEC)
+%.o: %.c
+	$(CCW) -c $< -o $@
 
+re: fclean all
+
+fclean: clean
+	rm -rf $(NAME)
+
+clean:
+	rm -rf *.o
+
+.PONHY: re fclean clean all
