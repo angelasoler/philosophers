@@ -12,6 +12,11 @@
 
 #include "philo.h"
 
+void	join_meal(int *id)
+{
+	printf("Philo %d access shared resources (join meal)\n", *id);
+}
+
 void	free_data(t_main *data)
 {
 	free(data->dinner.philo);
@@ -20,31 +25,30 @@ void	free_data(t_main *data)
 
 int	end_dinner(t_main *data)
 {
-	int	i;
+	int	id;
+	int	time;
 
-	i = 0;
+	id = 0;
 	pthread_mutex_destroy(&data->dinner.dinner);
-	while (i < data->n_philo)
+	while (id < data->n_philo)
 	{
-		pthread_mutex_destroy(&data->dinner.fork[i]);
-		i++;
+		pthread_mutex_destroy(&data->dinner.fork[id]);
+		pthread_join(data->dinner.philo[id].philosopher, \
+					(void **)&data->dinner.philo[id].state);
+		if (data->dinner.philo[id].state)
+		{
+			time = data->dinner.philo[id].state;
+			printf("Philo %d leave the room\n", time);
+		}
+		id++;
 	}
-	pthread_exit(NULL);
 	free_data(data);
 	return (0);
 }
 
 void	*table(void	*arg)
 {
-	t_main		*data;
-	// t_dinner	*dinner;
-
-	data = arg;
-	printf("Philo %d has sat at the table\n", data->actual_id);
-	// while (1)
-	// {
-
-	// }
-	pthread_exit(0);
-	// return ((void *)0);
+	join_meal((int *)arg);
+	pthread_exit(arg);
+	return ((void *)0);
 }

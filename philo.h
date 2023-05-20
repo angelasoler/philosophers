@@ -15,6 +15,7 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/types.h>
+# include <sys/time.h>
 # define TRUE 1
 # define FALSE 0
 # define PHILO_H
@@ -28,9 +29,9 @@ typedef enum s_state
 
 typedef struct s_philo
 {
-	pthread_t	philosopher;
-	int			state;
-	int			id;
+	pthread_t		philosopher;
+	int				state;
+	struct timeval	id;
 }	t_philo;
 
 typedef struct s_dinner
@@ -38,6 +39,7 @@ typedef struct s_dinner
 	pthread_mutex_t	dinner;
 	pthread_mutex_t	*fork;
 	t_philo			*philo;
+	int				count_philos;
 }	t_dinner;
 
 typedef struct s_main

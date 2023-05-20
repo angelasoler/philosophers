@@ -35,18 +35,29 @@ int	verify_data(char **args)
 int	init_philos(t_main	*data)
 {
 	int	id;
+	int	ret;
 
 	id = 0;
+	ret = 0;
 	while (id < data->n_philo)
 	{
-		data->dinner.philo[id].id = id;
 		data->actual_id = id;
+		printf("there's %d philos in the room\n", id);
+		data->dinner.philo[id].state = 0;
+		if (gettimeofday(&data->dinner.philo[id].id, NULL))
+		{
+			ret = printf("Failed getting time of %d philo \n", id);
+			return (ret);
+		}
 		if (pthread_create(&data->dinner.philo[id].philosopher, \
-			NULL, table, data))
-			return (printf("Philo threat %d fail\n", id));
+			NULL, table, (void *)&data->dinner.philo[id].id.tv_usec))
+		{
+			ret = printf("Philo thread %d fail\n", id);
+			return (ret);
+		}
 		id++;
 	}
-	return (0);
+	return (ret);
 }
 
 int	init_dinner(t_main *data)
