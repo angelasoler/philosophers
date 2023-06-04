@@ -30,8 +30,10 @@ typedef enum s_state
 typedef struct s_philo
 {
 	pthread_t		philosopher;
-	int				state;
-	struct timeval	id;
+	long int		*ret;
+	t_state			state;
+	struct timeval	time;
+	long int		id;
 }	t_philo;
 
 typedef struct s_dinner
@@ -55,6 +57,8 @@ typedef struct s_main
 
 int		ft_isdigit(char c);
 int		ft_atoi(const char *nptr);
+void	*ft_memset(void *s, int c, size_t n);
+void	*ft_calloc(size_t nmemb, size_t size);
 
 int		init_data(t_main *data, char *args[]);
 int		init_philos(t_main	*data);

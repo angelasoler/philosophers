@@ -43,14 +43,15 @@ int	init_philos(t_main	*data)
 	{
 		data->actual_id = id;
 		printf("there's %d philos in the room\n", id);
-		data->dinner.philo[id].state = 0;
-		if (gettimeofday(&data->dinner.philo[id].id, NULL))
+		if (gettimeofday(&data->dinner.philo[id].time, NULL))
 		{
 			ret = printf("Failed getting time of %d philo \n", id);
 			return (ret);
 		}
+		data->dinner.philo[id].id = data->dinner.philo[id].time.tv_usec;
+		printf("philo %d tem id %ld\n", id, data->dinner.philo[id].id);
 		if (pthread_create(&data->dinner.philo[id].philosopher, \
-			NULL, table, (void *)&data->dinner.philo[id].id.tv_usec))
+			NULL, table, (void *)&data->dinner.philo[id].id))
 		{
 			ret = printf("Philo thread %d fail\n", id);
 			return (ret);
@@ -65,10 +66,10 @@ int	init_dinner(t_main *data)
 	int	i;
 
 	i = 0;
-	data->dinner.philo = malloc(sizeof(t_philo) * data->n_philo);
+	data->dinner.philo = ft_calloc(sizeof(t_philo), data->n_philo);
 	if (!data->dinner.philo)
 		return (printf("philo malloc fail\n"));
-	data->dinner.fork = malloc(sizeof(pthread_mutex_t) * data->n_philo);
+	data->dinner.fork = ft_calloc(sizeof(pthread_mutex_t), data->n_philo);
 	if (!data->dinner.fork)
 		return (printf("fork malloc fail\n"));
 	if (pthread_mutex_init(&data->dinner.dinner, NULL))

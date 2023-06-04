@@ -16,8 +16,9 @@ int	main(int argc, char *argv[])
 {
 	t_main	data;
 
+	ft_memset((void *)&data, 0, sizeof(data));
 	if (argc < 5 || argc > 6)
-		return (printf("Worng arguments\n"));
+		return (printf("Wrong arguments\n"));
 	if (argc < 6)
 		data.n_time_sleep = FALSE;
 	else
