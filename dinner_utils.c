@@ -49,10 +49,14 @@ void	*table(void	*arg)
 {
 	long int	*ret;
 	long int	*ret2;
+	t_philo		*philo;
+	long int	id;
 
+	philo = (t_philo *)arg;
+	id = philo->id;
 	ret2 = ft_calloc(sizeof(long int), 1);
-	join_meal((long int *)arg);
-	ret = (long int *)arg;
+	join_meal(&id);
+	ret = &id;
 	*ret2 = *ret;
 	pthread_exit((void *)ret2);
 	return ((void *)0);

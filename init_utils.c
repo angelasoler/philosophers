@@ -49,9 +49,9 @@ int	init_philos(t_main	*data)
 			return (ret);
 		}
 		data->dinner.philo[id].id = data->dinner.philo[id].time.tv_usec;
-		printf("philo %d tem id %ld\n", id, data->dinner.philo[id].id);
+		printf("philo %d has id %ld\n", id, data->dinner.philo[id].id);
 		if (pthread_create(&data->dinner.philo[id].philosopher, \
-			NULL, table, (void *)&data->dinner.philo[id].id))
+			NULL, table, (void *)&data->dinner.philo[id]))
 		{
 			ret = printf("Philo thread %d fail\n", id);
 			return (ret);

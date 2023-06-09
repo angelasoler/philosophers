@@ -12,6 +12,14 @@ SRC=philo.c \
 
 OBJ=$(SRC:.c=.o)
 
+BUILD=docker build -t philo .
+
+RUN=docker run -it --name=philo \
+	--mount type=bind,source=$(PWD),target=/src \
+	philo:1.0 bash
+
+EXEC=docker exec -ti philo bash
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
@@ -27,5 +35,17 @@ fclean: clean
 
 clean:
 	rm -rf *.o
+
+run:
+	$(RUN)
+
+build:
+	$(BUILD)
+
+start: 
+	docker start philo
+
+image: start
+	$(EXEC)
 
 .PONHY: re fclean clean all
