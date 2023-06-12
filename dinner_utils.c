@@ -12,52 +12,51 @@
 
 #include "philo.h"
 
-void	join_meal(long int *id)
+void	join_meal(long int id, long int last_meal)
 {
-	printf("Philo %ld access shared resources (join meal)\n", *id);
-}
+	struct timeval	actual_time;
 
-void	free_data(t_main *data)
-{
-	free(data->dinner.philo);
-	free(data->dinner.fork);
+	printf("Philo %ld access join meal, last_meal = %ld\n", id, last_meal);
+	gettimeofday(&actual_time, NULL);
+	printf("has not eaten from %ld miliseconds\n", \
+			actual_time.tv_usec - last_meal);
 }
 
 int	end_dinner(t_main *data)
 {
-	int			id;
+	int	id;
+	int	*thread_ret;
 
 	id = 0;
-	pthread_mutex_destroy(&data->dinner.dinner);
+	thread_ret = NULL;
 	while (id < data->n_philo)
 	{
-		pthread_mutex_destroy(&data->dinner.fork[id]);
-		pthread_join(data->dinner.philo[id].philosopher, \
-					(void **)&data->dinner.philo[id].ret);
-		if (data->dinner.philo[id].ret)
+		pthread_mutex_destroy(&data->dinner.philo[id].fork_mutex);
+		pthread_join(data->dinner.philo[id].philosopher, (void **)&thread_ret);
+		if (thread_ret)
 		{
-			printf("Philo %ld leaves the room\n", *data->dinner.philo[id].ret);
-			free(data->dinner.philo[id].ret);
+			printf("Philo %d leaves the room\n", *thread_ret);
+			free(thread_ret);
 		}
 		id++;
 	}
-	free_data(data);
+	free(data->dinner.philo);
 	return (0);
 }
 
 void	*table(void	*arg)
 {
-	long int	*ret;
-	long int	*ret2;
+	int			*aux;
+	int			*ret;
 	t_philo		*philo;
-	long int	id;
+	long int	last_meal;
 
 	philo = (t_philo *)arg;
-	id = philo->id;
-	ret2 = ft_calloc(sizeof(long int), 1);
-	join_meal(&id);
-	ret = &id;
-	*ret2 = *ret;
-	pthread_exit((void *)ret2);
+	last_meal = philo->last_meal.tv_usec;
+	ret = ft_calloc(sizeof(int), 1);
+	join_meal(philo->id, last_meal);
+	aux = &philo->id;
+	*ret = *aux;
+	pthread_exit((void *)ret);
 	return ((void *)0);
 }

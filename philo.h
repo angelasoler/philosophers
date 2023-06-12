@@ -27,21 +27,36 @@ typedef enum s_state
 	SLEEP
 }	t_state;
 
+typedef enum s_fork
+{
+	AVALIBLE,
+	BUSY
+}	t_fork;
+
+typedef struct s_data
+{
+	int			n_philo;
+	int			t_die;
+	int			t_eat;
+	int			t_sleep;
+	int			n_time_sleep;
+}	t_data;
+
 typedef struct s_philo
 {
 	pthread_t		philosopher;
-	long int		*ret;
+	t_fork			fork;
 	t_state			state;
-	struct timeval	time;
-	long int		id;
+	int				id;
+	t_data			*data;
+	pthread_mutex_t	fork_mutex;
+	struct timeval	last_meal;
+	struct s_philo	**neighbor;
 }	t_philo;
 
 typedef struct s_dinner
 {
-	pthread_mutex_t	dinner;
-	pthread_mutex_t	*fork;
 	t_philo			*philo;
-	int				count_philos;
 }	t_dinner;
 
 typedef struct s_main
@@ -51,7 +66,6 @@ typedef struct s_main
 	int			t_eat;
 	int			t_sleep;
 	int			n_time_sleep;
-	int			actual_id;
 	t_dinner	dinner;
 }	t_main;
 
