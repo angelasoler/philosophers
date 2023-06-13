@@ -22,17 +22,19 @@ void	join_meal(long int id, long int last_meal)
 			actual_time.tv_usec - last_meal);
 }
 
-int	end_dinner(t_main *data)
+int	end_dinner(t_dinner *dinner)
 {
 	int	id;
 	int	*thread_ret;
+	int	n_philos;
 
 	id = 0;
+	n_philos = dinner->args.n_philos;
 	thread_ret = NULL;
-	while (id < data->n_philo)
+	while (id < n_philos)
 	{
-		pthread_mutex_destroy(&data->dinner.philo[id].fork_mutex);
-		pthread_join(data->dinner.philo[id].philosopher, (void **)&thread_ret);
+		pthread_mutex_destroy(&dinner->philo[id].fork_mutex);
+		pthread_join(dinner->philo[id].philosopher, (void **)&thread_ret);
 		if (thread_ret)
 		{
 			printf("Philo %d leaves the room\n", *thread_ret);
@@ -40,7 +42,7 @@ int	end_dinner(t_main *data)
 		}
 		id++;
 	}
-	free(data->dinner.philo);
+	free(dinner->philo);
 	return (0);
 }
 

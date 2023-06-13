@@ -14,19 +14,19 @@
 
 int	main(int argc, char *argv[])
 {
-	t_main	data;
+	t_dinner	dinner;
 
-	ft_memset((void *)&data, 0, sizeof(data));
+	ft_memset((void *)&dinner, 0, sizeof(dinner));
 	if (argc < 5 || argc > 6)
 		return (printf("Wrong arguments\n"));
 	if (argc < 6)
-		data.n_time_sleep = FALSE;
+		dinner.args.n_time_sleep = FALSE;
 	else
-		data.n_time_sleep = TRUE;
-	if (init_data(&data, argv))
+		dinner.args.n_time_sleep = TRUE;
+	if (init_data(&dinner.args, argv))
 		return (-1);
-	if (init_dinner(&data))
+	if (init_dinner(&dinner))
 		return (printf("init philo fail\n"));
-	end_dinner(&data);
+	end_dinner(&dinner);
 	return (0);
 }

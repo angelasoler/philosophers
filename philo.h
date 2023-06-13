@@ -33,14 +33,14 @@ typedef enum s_fork
 	BUSY
 }	t_fork;
 
-typedef struct s_data
+typedef struct s_args
 {
-	int			n_philo;
+	int			n_philos;
 	int			t_die;
 	int			t_eat;
 	int			t_sleep;
 	int			n_time_sleep;
-}	t_data;
+}	t_args;
 
 typedef struct s_philo
 {
@@ -48,36 +48,27 @@ typedef struct s_philo
 	t_fork			fork;
 	t_state			state;
 	int				id;
-	t_data			*data;
+	t_args			*args;
 	pthread_mutex_t	fork_mutex;
 	struct timeval	last_meal;
-	struct s_philo	**neighbor;
+	struct s_philo	*neighbor;
 }	t_philo;
 
 typedef struct s_dinner
 {
-	t_philo			*philo;
+	t_args	args;
+	t_philo	*philo;
 }	t_dinner;
-
-typedef struct s_main
-{
-	int			n_philo;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
-	int			n_time_sleep;
-	t_dinner	dinner;
-}	t_main;
 
 int		ft_isdigit(char c);
 int		ft_atoi(const char *nptr);
 void	*ft_memset(void *s, int c, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
 
-int		init_data(t_main *data, char *args[]);
-int		init_philos(t_main	*data);
-int		init_dinner(t_main *data);
+int		init_data(t_args *data, char *args[]);
+int		init_philos(t_dinner *dinner);
+int		init_dinner(t_dinner *dinner);
 void	*table(void *arg);
-int		end_dinner(t_main *data);
+int		end_dinner(t_dinner *dinner);
 
 #endif
