@@ -20,9 +20,9 @@ int	main(int argc, char *argv[])
 	if (argc < 5 || argc > 6)
 		return (printf("Wrong arguments\n"));
 	if (argc < 6)
-		dinner.args.n_time_sleep = FALSE;
+		dinner.args.n_must_eat = FALSE;
 	else
-		dinner.args.n_time_sleep = TRUE;
+		dinner.args.n_must_eat = TRUE;
 	if (init_data(&dinner.args, argv))
 		return (-1);
 	if (init_dinner(&dinner))

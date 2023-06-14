@@ -55,7 +55,7 @@ int	init_philos(t_dinner *dinner)
 		else
 			dinner->philo[id].neighbor = &dinner->philo[0];
 		if (pthread_create(&dinner->philo[id].philosopher, \
-			NULL, table, (void *)&dinner->philo[id]))
+			NULL, join_meal, (void *)&dinner->philo[id]))
 		{
 			ret = printf("Philo thread %d fail\n", id);
 			return (ret);
@@ -92,7 +92,7 @@ int	init_data(t_args *data, char *args[])
 	data->t_die = ft_atoi(args[2]);
 	data->t_eat = ft_atoi(args[3]);
 	data->t_sleep = ft_atoi(args[4]);
-	if (data->n_time_sleep)
-		data->n_time_sleep = ft_atoi(args[5]);
+	if (data->n_must_eat)
+		data->n_must_eat = ft_atoi(args[5]);
 	return (0);
 }

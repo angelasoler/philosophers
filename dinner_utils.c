@@ -12,14 +12,87 @@
 
 #include "philo.h"
 
-void	join_meal(long int id, long int last_meal)
+int	alert_dead(t_philo *philo)
 {
-	struct timeval	actual_time;
+	long int		last_meal;
+	struct timeval	time_now;
 
-	printf("Philo %ld access join meal, last_meal = %ld\n", id, last_meal);
-	gettimeofday(&actual_time, NULL);
-	printf("has not eaten from %ld miliseconds\n", \
-			actual_time.tv_usec - last_meal);
+	gettimeofday(&time_now, NULL);
+	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
+				philo->args->t_eat;
+	while (last_meal)
+	{
+		gettimeofday(&time_now, NULL);
+		last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
+					philo->args->t_eat;
+	}
+	return (0);
+}
+
+void	philo_take_a_fork(t_philo *philo)
+{
+	int		first_fork;
+	int		second_fork;
+	t_now	time_now;
+
+	gettimeofday(&time_now, NULL);
+	printf("%ld %d is thinking\n", time_now.tv_usec, philo->id);
+	while (philo->fork == BUSY)
+		continue ;
+	first_fork = pthread_mutex_lock(&philo->fork_mutex);
+	if (!first_fork)
+	{
+		gettimeofday(&time_now, NULL);
+		printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
+		philo->fork = BUSY;
+	}
+	while (philo->neighbor->fork == BUSY)
+		continue ;
+	second_fork = pthread_mutex_lock(&philo->neighbor->fork_mutex);
+	if (!second_fork)
+	{
+		gettimeofday(&time_now, NULL);
+		printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
+		philo->fork = BUSY;
+	}
+}
+
+int	philo_eat(t_philo *philo)
+{
+	static int	eat_counter;
+	t_now		time_now;
+
+	gettimeofday(&time_now, NULL);
+	printf("%ld %d is eating\n", time_now.tv_usec, philo->id);
+	usleep(philo->args->t_eat);
+	philo->fork = AVALIBLE;
+	philo->fork = AVALIBLE;
+	pthread_mutex_unlock(&philo->fork_mutex);
+	pthread_mutex_unlock(&philo->neighbor->fork_mutex);
+	if (philo->args->n_must_eat)
+	{
+		eat_counter++;
+		if (eat_counter == philo->args->n_must_eat)
+			return (1);
+	}
+	return (0);
+}
+
+void	philo_sleep(t_philo *philo)
+{
+	t_now	time_now;
+
+	gettimeofday(&time_now, NULL);
+	printf("%ld %d is sleeping\n", time_now.tv_usec, philo->id);
+	usleep(philo->args->t_sleep);
+}
+
+void	set_at_the_table(t_philo *philo)
+{
+	philo_take_a_fork(philo);
+	if (philo_eat(philo))
+		return ;
+	philo_sleep(philo);
 }
 
 int	end_dinner(t_dinner *dinner)
@@ -46,19 +119,15 @@ int	end_dinner(t_dinner *dinner)
 	return (0);
 }
 
-void	*table(void	*arg)
+void	*join_meal(void	*arg)
 {
-	int			*aux;
 	int			*ret;
 	t_philo		*philo;
-	long int	last_meal;
 
 	philo = (t_philo *)arg;
-	last_meal = philo->last_meal.tv_usec;
 	ret = ft_calloc(sizeof(int), 1);
-	join_meal(philo->id, last_meal);
-	aux = &philo->id;
-	*ret = *aux;
+	*ret = philo->id;
+	set_at_the_table(philo);
 	pthread_exit((void *)ret);
 	return ((void *)0);
 }

@@ -12,6 +12,7 @@
 
 #ifndef PHILO_H
 # include <stdio.h>
+# include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/types.h>
@@ -19,6 +20,8 @@
 # define TRUE 1
 # define FALSE 0
 # define PHILO_H
+
+typedef struct timeval	t_now;
 
 typedef enum s_state
 {
@@ -39,7 +42,7 @@ typedef struct s_args
 	int			t_die;
 	int			t_eat;
 	int			t_sleep;
-	int			n_time_sleep;
+	int			n_must_eat;
 }	t_args;
 
 typedef struct s_philo
@@ -68,7 +71,7 @@ void	*ft_calloc(size_t nmemb, size_t size);
 int		init_data(t_args *data, char *args[]);
 int		init_philos(t_dinner *dinner);
 int		init_dinner(t_dinner *dinner);
-void	*table(void *arg);
+void	*join_meal(void *arg);
 int		end_dinner(t_dinner *dinner);
 
 #endif
