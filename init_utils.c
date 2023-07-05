@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/05/04 00:51:57 by asoler           ###   ########.fr       */
+/*   Updated: 2023/07/04 21:51:08 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,38 +31,79 @@ int	verify_data(char **args)
 	}
 	return (0);
 }
+// [_] `id` is not working as expected, it seems more like an addrs
+// [_] use n_philos from philo struct
+int	create_philosopher(t_philo *philo, int id, int n_philos, t_philo *last_neighbor, t_philo *first_neighbor)
+{
+	int	ret;
+
+	ret = 0;
+	if (gettimeofday(&philo->last_meal, NULL))
+	{
+		ret = printf("Failed getting time of %d philo \n", id);
+		return (ret);
+	}
+	philo->id = id;
+	if (id < (n_philos - 1))
+		philo->neighbor = last_neighbor;
+	else
+		philo->neighbor = first_neighbor;
+	if (pthread_create(&philo->philosopher, \
+		NULL, join_meal, (void *)&philo))
+	{
+		ret = printf("Philo thread %d fail\n", id);
+		return (ret);
+	}
+	return (0);
+}
+
+int	verify_philos_state(t_philo *philo)
+{
+	if (philo->im_done)
+		return (1);
+	return (0);
+}
+
+int	ft_lstiter(t_list *lst, int (f)(void *))
+{
+	t_list	*aux;
+
+	aux = lst;
+	while (aux)
+	{
+		if (f(aux->philo))
+			return (printf("philo %d starved\n", aux->philo->id));
+		else
+			if (verify_philos_state(aux->philo))
+				return (0);
+		aux = aux->next;
+	}
+	printf("circle linked list fail\n");
+	return (0);
+}
 
 int	init_philos(t_dinner *dinner)
 {
-	int	id;
-	int	ret;
-	int	n_philos;
+	int		id;
+	int		n_philos;
+	t_list	*list;
 
+	list = NULL;
 	id = 0;
-	ret = 0;
 	n_philos = dinner->args.n_philos;
 	while (id < n_philos)
 	{
-		if (gettimeofday(&dinner->philo[id].last_meal, NULL))
-		{
-			ret = printf("Failed getting time of %d philo \n", id);
-			return (ret);
-		}
-		dinner->philo[id].id = id;
 		dinner->philo[id].args = &dinner->args;
-		if (id < (n_philos - 1))
-			dinner->philo[id].neighbor = &dinner->philo[id + 1];
-		else
-			dinner->philo[id].neighbor = &dinner->philo[0];
-		if (pthread_create(&dinner->philo[id].philosopher, \
-			NULL, join_meal, (void *)&dinner->philo[id]))
-		{
-			ret = printf("Philo thread %d fail\n", id);
-			return (ret);
-		}
+		if (create_philosopher(&dinner->philo[id], id, n_philos, &dinner->philo[id + 1], &dinner->philo[0]))
+			return (1);
+		alloc_philo_list(&list, &dinner->philo[id], id);
 		id++;
 	}
-	return (ret);
+	if (ft_lstiter(list, alert_dead))
+		printf("somebody starved, attach not join?\n");
+	else
+		printf("dinner is almost over, everybody satisfied\n");
+	return (0);
 }
 
 int	init_dinner(t_dinner *dinner)

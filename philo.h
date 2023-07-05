@@ -55,13 +55,25 @@ typedef struct s_philo
 	pthread_mutex_t	fork_mutex;
 	struct timeval	last_meal;
 	struct s_philo	*neighbor;
+	int				im_done;
 }	t_philo;
+
+typedef struct s_list
+{
+	t_philo			*philo;
+	struct s_list	*next;
+}	t_list;
 
 typedef struct s_dinner
 {
 	t_args	args;
 	t_philo	*philo;
 }	t_dinner;
+
+int		alert_dead(void *arg);
+
+t_list	*ft_lstlast(t_list *lst);
+int		alloc_philo_list(t_list **main_list, t_philo *philo, int id);
 
 int		ft_isdigit(char c);
 int		ft_atoi(const char *nptr);

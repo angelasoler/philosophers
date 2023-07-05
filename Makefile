@@ -8,7 +8,8 @@ SRC=philo.c \
 	lib_utils.c \
 	ft_atoi.c \
 	init_utils.c \
-	dinner_utils.c
+	dinner_utils.c \
+	philo_linked_list.c
 
 OBJ=$(SRC:.c=.o)
 

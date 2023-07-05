@@ -12,20 +12,18 @@
 
 #include "philo.h"
 
-int	alert_dead(t_philo *philo)
+int	alert_dead(void *arg)
 {
 	long int		last_meal;
 	struct timeval	time_now;
+	t_philo			*philo;
 
+	philo = (t_philo *)arg;
 	gettimeofday(&time_now, NULL);
 	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
 				philo->args->t_eat;
-	while (last_meal)
-	{
-		gettimeofday(&time_now, NULL);
-		last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
-					philo->args->t_eat;
-	}
+	if (last_meal <= 0)
+		return (1);
 	return (0);
 }
 
@@ -128,6 +126,7 @@ void	*join_meal(void	*arg)
 	ret = ft_calloc(sizeof(int), 1);
 	*ret = philo->id;
 	set_at_the_table(philo);
+	philo->im_done = 1;
 	pthread_exit((void *)ret);
 	return ((void *)0);
 }
