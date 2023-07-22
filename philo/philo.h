@@ -6,7 +6,7 @@
 /*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/07/22 18:50:30 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 20:19:14 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ typedef struct s_dinner
 	int		detach;
 }	t_dinner;
 
-int		alert_dead(void *arg);
-
 t_list	*ft_lstlast(t_list *lst);
 int		alloc_philo_list(t_list **main_list, t_philo *philo, int id);
 
@@ -86,5 +84,10 @@ int		init_philos(t_dinner *dinner);
 int		init_dinner(t_dinner *dinner);
 void	*join_meal(void *arg);
 int		end_dinner(t_dinner *dinner);
+
+void	print_philo(t_philo *philo, long int last_meal);
+int		alert_dead(void *arg);
+int		ft_lstiter(t_list *lst, int (f)(void *));
+int		verify_data(char **args);
 
 #endif

@@ -6,54 +6,11 @@
 /*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/07/22 19:18:19 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 20:10:16 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-const char* stateToString(t_state state) {
-	switch (state) {
-		case EAT:
-			return "EAT";
-		case THINK:
-			return "THINK";
-		case SLEEP:
-			return "SLEEP";
-		default:
-			return "UNKNOWN";
-	}
-}
-
-void	print_philo(t_philo *philo, long int last_meal)
-{
-	// static int n;
-
-	// if (n >= 2)
-	// 	return ;
-	printf("Philo:\n");
-	printf("  State: %s\n", stateToString(philo->state));
-	printf("  ID: %d\n", philo->id);
-	printf("  im_done: %d\n", philo->im_done);
-	// n = philo->id;
-	printf("last meal time is over? %s\n", last_meal  <= 0? "true":"false");
-}
-
-int	alert_dead(void *arg)
-{
-	long int		last_meal;
-	struct timeval	time_now;
-	t_philo			*philo;
-
-	philo = (t_philo *)arg;
-	gettimeofday(&time_now, NULL);
-	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
-				philo->args->t_eat;
-	print_philo(philo, last_meal);
-	if (last_meal <= 0)
-		return (1);
-	return (0);
-}
 
 void	philo_take_a_fork(t_philo *philo)
 {
@@ -119,34 +76,6 @@ void	set_at_the_table(t_philo *philo)
 	if (philo_eat(philo))
 		return ;
 	philo_sleep(philo);
-}
-
-int	end_dinner(t_dinner *dinner)
-{
-	int	id;
-	int	*thread_ret;
-	int	n_philos;
-
-	id = 0;
-	n_philos = dinner->args.n_philos;
-	thread_ret = NULL;
-	while (id < n_philos)
-	{
-		pthread_mutex_destroy(&dinner->philo[id].fork_mutex);
-		if (dinner->detach)
-			pthread_detach(dinner->philo[id].philosopher);
-		else
-			pthread_join(dinner->philo[id].philosopher, (void **)&thread_ret);
-		if (thread_ret)
-		{
-			printf("Philo %d leaves the room\n", *thread_ret);
-			free(thread_ret);
-		}
-		id++;
-	}
-	free(dinner->philo);
-	free(dinner);
-	return (0);
 }
 
 void	*join_meal(void	*arg)

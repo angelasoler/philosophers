@@ -5,11 +5,13 @@ CCW=gcc -Wall -Werror -Wextra -g3
 THREAD_FLAG=-lpthread
 
 SRC=philo.c \
-	philo_lib_utils.c \
+	philo_utils.c \
 	philo_ft_atoi.c \
-	philo_init_utils.c \
-	philo_dinner_utils.c \
-	philo_linked_list.c
+	philo_init.c \
+	philo_dinner.c \
+	philo_end_dinner.c \
+	philo_linked_list.c \
+	philo_monitoring.c
 
 OBJ=$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 

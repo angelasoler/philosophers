@@ -6,17 +6,11 @@
 /*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 21:45:14 by angelasoler       #+#    #+#             */
-/*   Updated: 2023/07/22 19:45:44 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 20:08:28 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	ft_lstadd_front(t_list **lst, t_list *new)
-{
-	new->next = *lst;
-	*lst = new;
-}
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
@@ -30,7 +24,6 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	back = ft_lstlast(*lst);
 	back->next = new;
 }
-
 
 t_list	*ft_lstlast(t_list *lst)
 {
@@ -46,11 +39,6 @@ t_list	*ft_lstlast(t_list *lst)
 	return (aux);
 }
 
-void	ft_lstdelone(t_list *lst, void (*del)(void*))
-{
-	del(lst->philo);
-	free(lst);
-}
 
 t_list	*ft_lstnew(void	*philo)
 {
@@ -62,23 +50,6 @@ t_list	*ft_lstnew(void	*philo)
 	result->philo = philo;
 	result->next = NULL;
 	return (result);
-}
-
-void	ft_lstclear(t_list **lst)
-{
-	t_list	*aux;
-	t_list	*aux1;
-
-	aux = *lst;
-	aux1 = *lst;
-	while (aux1)
-	{
-		aux->philo = NULL;
-		aux1 = aux->next;
-		free(aux);
-		aux = aux1;
-	}
-	*lst = NULL;
 }
 
 int	alloc_philo_list(t_list **main_list, t_philo *philo, int id)

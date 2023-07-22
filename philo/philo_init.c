@@ -1,37 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_init_utils.c                                 :+:      :+:    :+:   */
+/*   philo_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/07/22 19:51:39 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 20:14:37 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	verify_data(char **args)
-{
-	int	col;
-	int	row;
-
-	row = 1;
-	while (args[row])
-	{
-		col = 0;
-		while (args[row][col])
-		{
-			if (!ft_isdigit(args[row][col]))
-				return (1);
-			col++;
-		}
-		row++;
-	}
-	return (0);
-}
-// [_] use n_philos and id from philo struct
 int	create_philosopher(t_philo *philo, t_philo *last_neighbor, t_philo *first_neighbor)
 {
 	int	id;
@@ -56,32 +36,6 @@ int	create_philosopher(t_philo *philo, t_philo *last_neighbor, t_philo *first_ne
 		ret = printf("Philo thread %d fail\n", id);
 		return (ret);
 	}
-	return (0);
-}
-
-int	verify_philos_state(t_philo *philo)
-{
-	if (philo->im_done)
-		return (1);
-	return (0);
-}
-
-int	ft_lstiter(t_list *lst, int (f)(void *))
-{
-	t_list	*aux;
-
-	aux = lst;
-	while (aux)
-	{
-		if (f(aux->philo))
-			return (printf("philo %d starved\n", aux->philo->id));
-		else
-			if (verify_philos_state(aux->philo))
-				return (0);
-		aux = aux->next;
-	}
-	printf("circle linked list fail\n");
-	exit(1);
 	return (0);
 }
 
