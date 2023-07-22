@@ -6,7 +6,7 @@
 /*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/07/22 09:11:44 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 19:51:39 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,21 @@ int	verify_data(char **args)
 	}
 	return (0);
 }
-// [_] `id` is not working as expected, it seems more like an addrs
-// [_] use n_philos from philo struct
-int	create_philosopher(t_philo *philo, int id, int n_philos, t_philo *last_neighbor, t_philo *first_neighbor)
+// [_] use n_philos and id from philo struct
+int	create_philosopher(t_philo *philo, t_philo *last_neighbor, t_philo *first_neighbor)
 {
+	int	id;
 	int	ret;
+	int n_philos;
 
 	ret = 0;
+	id = philo->id;
+	n_philos = philo->args->n_philos;
 	if (gettimeofday(&philo->last_meal, NULL))
 	{
 		ret = printf("Failed getting time of %d philo \n", id);
 		return (ret);
 	}
-	philo->id = id;
 	if (id < (n_philos - 1))
 		philo->neighbor = last_neighbor;
 	else
@@ -95,13 +97,14 @@ int	init_philos(t_dinner *dinner)
 	while (id < n_philos)
 	{
 		dinner->philo[id].args = &dinner->args;
-		if (create_philosopher(&dinner->philo[id], id, n_philos, &dinner->philo[id + 1], &dinner->philo[0]))
-			return (1);
+		dinner->philo->id = id;
+		if (create_philosopher(&dinner->philo[id], &dinner->philo[id + 1], &dinner->philo[0]))
+			return (-1);
 		alloc_philo_list(&list, &dinner->philo[id], id);
 		id++;
 	}
 	if (ft_lstiter(list, alert_dead))
-		printf("somebody starved, attach not join?\n");
+		return (printf("somebody starved, attach not join?\n"));
 	else
 		printf("dinner is almost over, everybody satisfied\n");
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/07/22 09:15:38 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 19:18:19 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,10 @@ int	end_dinner(t_dinner *dinner)
 	while (id < n_philos)
 	{
 		pthread_mutex_destroy(&dinner->philo[id].fork_mutex);
-		pthread_join(dinner->philo[id].philosopher, (void **)&thread_ret);
+		if (dinner->detach)
+			pthread_detach(dinner->philo[id].philosopher);
+		else
+			pthread_join(dinner->philo[id].philosopher, (void **)&thread_ret);
 		if (thread_ret)
 		{
 			printf("Philo %d leaves the room\n", *thread_ret);
@@ -142,6 +145,7 @@ int	end_dinner(t_dinner *dinner)
 		id++;
 	}
 	free(dinner->philo);
+	free(dinner);
 	return (0);
 }
 

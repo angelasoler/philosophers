@@ -3,3 +3,6 @@ philo/*.o
 philo/obj
 philo/testes
 cunit
+Philo_notes
+.gitignore
+.vscode/

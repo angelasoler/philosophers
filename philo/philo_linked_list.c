@@ -6,7 +6,7 @@
 /*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 21:45:14 by angelasoler       #+#    #+#             */
-/*   Updated: 2023/07/22 09:13:14 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 19:45:44 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_list	*ft_lstnew(void	*philo)
 	return (result);
 }
 
-void	ft_lstclear(t_list **lst, void (*del)(void*))
+void	ft_lstclear(t_list **lst)
 {
 	t_list	*aux;
 	t_list	*aux1;
@@ -73,23 +73,20 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 	aux1 = *lst;
 	while (aux1)
 	{
-		del(aux->philo);
+		aux->philo = NULL;
 		aux1 = aux->next;
 		free(aux);
 		aux = aux1;
 	}
-	*lst = 0;
+	*lst = NULL;
 }
 
-// [_] Make unit test of this function
 int	alloc_philo_list(t_list **main_list, t_philo *philo, int id)
 {
 	int		n_philos;
 	t_list	*list;
 	t_list	*last;
-	// int		id;
 
-	// id = philo->id;
 	list = ft_lstnew((void *)philo);
 	n_philos = philo->args->n_philos;
 	if (main_list)

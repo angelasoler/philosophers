@@ -6,7 +6,7 @@
 /*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/07/22 08:59:35 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 18:50:30 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_dinner
 {
 	t_args	args;
 	t_philo	*philo;
+	int		detach;
 }	t_dinner;
 
 int		alert_dead(void *arg);
