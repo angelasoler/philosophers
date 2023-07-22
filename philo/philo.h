@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/05/04 00:53:11 by asoler           ###   ########.fr       */
+/*   Updated: 2023/07/22 08:59:35 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ typedef struct s_philo
 	t_fork			fork;
 	t_state			state;
 	int				id;
+	int				im_done;
 	t_args			*args;
 	pthread_mutex_t	fork_mutex;
 	struct timeval	last_meal;
 	struct s_philo	*neighbor;
-	int				im_done;
 }	t_philo;
 
 typedef struct s_list

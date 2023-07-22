@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_utils.c                                       :+:      :+:    :+:   */
+/*   philo_init_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/07/04 21:51:08 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 09:11:44 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	ft_lstiter(t_list *lst, int (f)(void *))
 		aux = aux->next;
 	}
 	printf("circle linked list fail\n");
+	exit(1);
 	return (0);
 }
 

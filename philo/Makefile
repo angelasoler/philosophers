@@ -5,13 +5,15 @@ CCW=gcc -Wall -Werror -Wextra -g3
 THREAD_FLAG=-lpthread
 
 SRC=philo.c \
-	lib_utils.c \
-	ft_atoi.c \
-	init_utils.c \
-	dinner_utils.c \
+	philo_lib_utils.c \
+	philo_ft_atoi.c \
+	philo_init_utils.c \
+	philo_dinner_utils.c \
 	philo_linked_list.c
 
-OBJ=$(SRC:.c=.o)
+OBJ=$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
+
+OBJ_DIR=obj
 
 BUILD=docker build -t philo .
 
@@ -26,7 +28,8 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CCW) $(OBJ) $(THREAD_FLAG) -o $(NAME)
 
-%.o: %.c
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(OBJ_DIR) 
 	$(CCW) -c $< -o $@
 
 re: fclean all

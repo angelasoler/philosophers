@@ -1,2 +1,5 @@
-philo
-*.o
+philo/philo
+philo/*.o
+philo/obj
+philo/testes
+cunit

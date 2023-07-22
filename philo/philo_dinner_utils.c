@@ -1,16 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dinner_utils.c                                     :+:      :+:    :+:   */
+/*   philo_dinner_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
+/*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/05/04 00:49:17 by asoler           ###   ########.fr       */
+/*   Updated: 2023/07/22 09:15:38 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+const char* stateToString(t_state state) {
+	switch (state) {
+		case EAT:
+			return "EAT";
+		case THINK:
+			return "THINK";
+		case SLEEP:
+			return "SLEEP";
+		default:
+			return "UNKNOWN";
+	}
+}
+
+void	print_philo(t_philo *philo, long int last_meal)
+{
+	// static int n;
+
+	// if (n >= 2)
+	// 	return ;
+	printf("Philo:\n");
+	printf("  State: %s\n", stateToString(philo->state));
+	printf("  ID: %d\n", philo->id);
+	printf("  im_done: %d\n", philo->im_done);
+	// n = philo->id;
+	printf("last meal time is over? %s\n", last_meal  <= 0? "true":"false");
+}
 
 int	alert_dead(void *arg)
 {
@@ -22,6 +49,7 @@ int	alert_dead(void *arg)
 	gettimeofday(&time_now, NULL);
 	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
 				philo->args->t_eat;
+	print_philo(philo, last_meal);
 	if (last_meal <= 0)
 		return (1);
 	return (0);

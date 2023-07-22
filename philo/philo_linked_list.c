@@ -6,7 +6,7 @@
 /*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 21:45:14 by angelasoler       #+#    #+#             */
-/*   Updated: 2023/07/04 21:46:01 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 09:13:14 by angelasoler      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,20 +86,20 @@ int	alloc_philo_list(t_list **main_list, t_philo *philo, int id)
 {
 	int		n_philos;
 	t_list	*list;
-	t_list	*head;
 	t_list	*last;
+	// int		id;
 
+	// id = philo->id;
 	list = ft_lstnew((void *)philo);
 	n_philos = philo->args->n_philos;
-	head = *main_list;
 	if (main_list)
-		ft_lstadd_back(&head, list);
+		ft_lstadd_back(&(*main_list), list);
 	if (id == (n_philos - 1))
 	{
-		last = ft_lstlast(head);
-		last->next = head;
+		last = ft_lstlast(*main_list);
+		last->next = *main_list;
 	}
 	else if (!id)
-		head = list;
+		*main_list = list;
 	return (0);
 }
