@@ -25,11 +25,25 @@ int	create_philosopher(t_philo *philo, t_philo *neighbor)
 		return (ret);
 	}
 	philo->neighbor = neighbor;
-	if (pthread_create(&philo->philosopher, \
-		NULL, join_meal, (void *)&philo))
+	return (0);
+}
+
+int	create_threads(int n_philos, t_philo *philo)
+{
+	int	id;
+	int	ret;
+
+	ret = 0;
+	id = 0;
+	while (id < n_philos)
 	{
-		ret = printf("Philo thread %d fail\n", id);
-		return (ret);
+		if (pthread_create(&philo[id].philosopher, \
+			NULL, join_meal, (void *)&philo[id]))
+		{
+			ret = printf("Philo thread %d fail\n", id);
+			return (ret);
+		}
+		id++;
 	}
 	return (0);
 }
@@ -47,7 +61,7 @@ int	init_philos(t_dinner *dinner)
 	while (id < n_philos)
 	{
 		dinner->philo[id].args = &dinner->args;
-		dinner->philo->id = id;
+		dinner->philo[id].id = id;
 		neig_id = id + 1;
 		if (neig_id == n_philos)
 			neig_id = 0;
@@ -56,6 +70,7 @@ int	init_philos(t_dinner *dinner)
 		alloc_philo_list(&list, &dinner->philo[id], id);
 		id++;
 	}
+	create_threads(n_philos, dinner->philo);
 	if (ft_lstiter(list, alert_dead))
 		return (1);
 	return (0);
