@@ -1,16 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lib_utils.c                                        :+:      :+:    :+:   */
+/*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:59 by asoler            #+#    #+#             */
-/*   Updated: 2023/05/04 00:49:02 by asoler           ###   ########.fr       */
+/*   Updated: 2023/07/22 23:20:55 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	verify_data(char **args)
+{
+	int	col;
+	int	row;
+
+	row = 1;
+	while (args[row])
+	{
+		col = 0;
+		while (args[row][col])
+		{
+			if (!ft_isdigit(args[row][col]))
+				return (1);
+			col++;
+		}
+		row++;
+	}
+	return (0);
+}
 
 int	ft_isdigit(char c)
 {

@@ -1,33 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dinner_utils.c                                     :+:      :+:    :+:   */
+/*   philo_dinner.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/05/04 00:49:17 by asoler           ###   ########.fr       */
+/*   Updated: 2023/07/22 23:20:17 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-int	alert_dead(t_philo *philo)
-{
-	long int		last_meal;
-	struct timeval	time_now;
-
-	gettimeofday(&time_now, NULL);
-	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
-				philo->args->t_eat;
-	while (last_meal)
-	{
-		gettimeofday(&time_now, NULL);
-		last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
-					philo->args->t_eat;
-	}
-	return (0);
-}
 
 void	philo_take_a_fork(t_philo *philo)
 {
@@ -95,30 +78,6 @@ void	set_at_the_table(t_philo *philo)
 	philo_sleep(philo);
 }
 
-int	end_dinner(t_dinner *dinner)
-{
-	int	id;
-	int	*thread_ret;
-	int	n_philos;
-
-	id = 0;
-	n_philos = dinner->args.n_philos;
-	thread_ret = NULL;
-	while (id < n_philos)
-	{
-		pthread_mutex_destroy(&dinner->philo[id].fork_mutex);
-		pthread_join(dinner->philo[id].philosopher, (void **)&thread_ret);
-		if (thread_ret)
-		{
-			printf("Philo %d leaves the room\n", *thread_ret);
-			free(thread_ret);
-		}
-		id++;
-	}
-	free(dinner->philo);
-	return (0);
-}
-
 void	*join_meal(void	*arg)
 {
 	int			*ret;
@@ -128,6 +87,7 @@ void	*join_meal(void	*arg)
 	ret = ft_calloc(sizeof(int), 1);
 	*ret = philo->id;
 	set_at_the_table(philo);
+	philo->im_done = 1;
 	pthread_exit((void *)ret);
 	return ((void *)0);
 }

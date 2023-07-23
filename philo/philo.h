@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/05/04 00:53:11 by asoler           ###   ########.fr       */
+/*   Updated: 2023/07/22 23:21:07 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,28 @@ typedef struct s_philo
 	t_fork			fork;
 	t_state			state;
 	int				id;
+	int				im_done;
 	t_args			*args;
 	pthread_mutex_t	fork_mutex;
 	struct timeval	last_meal;
 	struct s_philo	*neighbor;
 }	t_philo;
 
+typedef struct s_list
+{
+	t_philo			*philo;
+	struct s_list	*next;
+}	t_list;
+
 typedef struct s_dinner
 {
 	t_args	args;
 	t_philo	*philo;
+	int		detach;
 }	t_dinner;
+
+t_list	*ft_lstlast(t_list *lst);
+int		alloc_philo_list(t_list **main_list, t_philo *philo, int id);
 
 int		ft_isdigit(char c);
 int		ft_atoi(const char *nptr);
@@ -73,5 +84,10 @@ int		init_philos(t_dinner *dinner);
 int		init_dinner(t_dinner *dinner);
 void	*join_meal(void *arg);
 int		end_dinner(t_dinner *dinner);
+
+void	print_philo(t_philo *philo, long int last_meal);
+int		alert_dead(void *arg);
+int		ft_lstiter(t_list *lst, int (f)(void *));
+int		verify_data(char **args);
 
 #endif
