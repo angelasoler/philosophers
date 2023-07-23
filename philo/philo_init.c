@@ -3,33 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   philo_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
+/*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/07/22 20:14:37 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 23:20:39 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	create_philosopher(t_philo *philo, t_philo *last_neighbor, t_philo *first_neighbor)
+int	create_philosopher(t_philo *philo, t_philo *neighbor)
 {
 	int	id;
 	int	ret;
-	int n_philos;
 
 	ret = 0;
 	id = philo->id;
-	n_philos = philo->args->n_philos;
 	if (gettimeofday(&philo->last_meal, NULL))
 	{
 		ret = printf("Failed getting time of %d philo \n", id);
 		return (ret);
 	}
-	if (id < (n_philos - 1))
-		philo->neighbor = last_neighbor;
-	else
-		philo->neighbor = first_neighbor;
+	philo->neighbor = neighbor;
 	if (pthread_create(&philo->philosopher, \
 		NULL, join_meal, (void *)&philo))
 	{
@@ -44,6 +39,7 @@ int	init_philos(t_dinner *dinner)
 	int		id;
 	int		n_philos;
 	t_list	*list;
+	int		neig_id;
 
 	list = NULL;
 	id = 0;
@@ -52,15 +48,16 @@ int	init_philos(t_dinner *dinner)
 	{
 		dinner->philo[id].args = &dinner->args;
 		dinner->philo->id = id;
-		if (create_philosopher(&dinner->philo[id], &dinner->philo[id + 1], &dinner->philo[0]))
+		neig_id = id + 1;
+		if (neig_id == n_philos)
+			neig_id = 0;
+		if (create_philosopher(&dinner->philo[id], &dinner->philo[neig_id]))
 			return (-1);
 		alloc_philo_list(&list, &dinner->philo[id], id);
 		id++;
 	}
 	if (ft_lstiter(list, alert_dead))
-		return (printf("somebody starved, attach not join?\n"));
-	else
-		printf("dinner is almost over, everybody satisfied\n");
+		return (1);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_linked_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
+/*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/04 21:45:14 by angelasoler       #+#    #+#             */
-/*   Updated: 2023/07/22 20:08:28 by angelasoler      ###   ########.fr       */
+/*   Created: 2023/07/04 21:45:14 by asoler       #+#    #+#             */
+/*   Updated: 2023/07/22 23:20:42 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_list	*ft_lstlast(t_list *lst)
 	}
 	return (aux);
 }
-
 
 t_list	*ft_lstnew(void	*philo)
 {

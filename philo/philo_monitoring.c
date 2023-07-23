@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_monitoring_utils.c                           :+:      :+:    :+:   */
+/*   philo_monitoring.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
+/*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/22 20:05:45 by angelasoler       #+#    #+#             */
-/*   Updated: 2023/07/22 20:11:59 by angelasoler      ###   ########.fr       */
+/*   Created: 2023/07/22 20:05:45 by asoler       #+#    #+#             */
+/*   Updated: 2023/07/22 23:20:48 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+// print_philo(philo, last_meal);
 int	alert_dead(void *arg)
 {
 	long int		last_meal;
@@ -22,7 +23,6 @@ int	alert_dead(void *arg)
 	gettimeofday(&time_now, NULL);
 	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
 				philo->args->t_eat;
-	print_philo(philo, last_meal);
 	if (last_meal <= 0)
 		return (1);
 	return (0);
@@ -54,24 +54,25 @@ int	ft_lstiter(t_list *lst, int (f)(void *))
 	return (0);
 }
 
-const char* stateToString(t_state state) {
-	switch (state) {
-		case EAT:
-			return "EAT";
-		case THINK:
-			return "THINK";
-		case SLEEP:
-			return "SLEEP";
-		default:
-			return "UNKNOWN";
-	}
+char	*state_to_string(t_state state)
+{
+	if (state == EAT)
+		return ("EAT");
+	else if (state == THINK)
+		return ("THINK");
+	else if (state == SLEEP)
+		return ("SLEEP");
+	return ("NULL");
 }
 
 void	print_philo(t_philo *philo, long int last_meal)
 {
 	printf("Philo:\n");
-	printf("  State: %s\n", stateToString(philo->state));
+	printf("  State: %s\n", state_to_string(philo->state));
 	printf("  ID: %d\n", philo->id);
-	printf("  im_done: %d\n", philo->im_done);
-	printf("last meal time is over? %s\n", last_meal  <= 0? "true":"false");
+	printf("  Im_done: %d\n", philo->im_done);
+	if (last_meal <= 0)
+		printf("  Starved: %s\n", "true");
+	else
+		printf("  Starved: %s\n", "false");
 }

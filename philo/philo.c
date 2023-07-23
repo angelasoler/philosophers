@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: angelasoler <angelasoler@student.42.fr>    +#+  +:+       +#+        */
+/*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:43 by asoler            #+#    #+#             */
-/*   Updated: 2023/07/22 19:18:10 by angelasoler      ###   ########.fr       */
+/*   Updated: 2023/07/22 23:21:00 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char *argv[])
 		dinner->args.n_must_eat = TRUE;
 	if (init_data(&dinner->args, argv))
 		return (-1);
-	dinner->detach  = init_dinner(dinner);
+	dinner->detach = init_dinner(dinner);
 	if (dinner->detach < 0)
 		return (printf("init philo fail\n"));
 	end_dinner(dinner);
