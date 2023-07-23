@@ -23,7 +23,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build project
-      run: make
+      run: make -C philo
   valgrind:
     name: Valgrind
     runs-on: ubuntu-latest

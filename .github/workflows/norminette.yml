@@ -8,11 +8,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: make -C philo
+      run: make -C philo/
   valgrind:
     run: |
       sudo apt install valgrind -y
-      
       valgrind philo/philo
   norminette:
     name: Norminette
