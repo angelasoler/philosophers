@@ -11,33 +11,47 @@
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <errno.h>
 
-void	philo_take_a_fork(t_philo *philo)
+int	block_fork(t_philo **philo, int id)
 {
-	int		first_fork;
-	int		second_fork;
-	t_now	time_now;
+	t_now		time_now;
+	// static int	count_think;
+	int			fork;
 
-	gettimeofday(&time_now, NULL);
-	printf("%ld %d is thinking\n", time_now.tv_usec, philo->id);
-	while (philo->fork == BUSY)
-		continue ;
-	first_fork = pthread_mutex_lock(&philo->fork_mutex);
-	if (!first_fork)
+	// while ((*philo)->fork == BUSY)
+	// {
+	// 	gettimeofday(&time_now, NULL);
+	// 	if (count_think == 0)
+	// 		printf("%ld %d is thinking\n", time_now.tv_usec, id);
+	// 	usleep(10);
+	// 	count_think++;
+	// }
+	fork = pthread_mutex_lock(&(*philo)->fork_mutex);
+	if (!fork)
 	{
 		gettimeofday(&time_now, NULL);
-		printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
-		philo->fork = BUSY;
+		printf("%ld %d has taken a fork\n", time_now.tv_usec, id);
+		(*philo)->fork = BUSY;
 	}
-	while (philo->neighbor->fork == BUSY)
-		continue ;
-	second_fork = pthread_mutex_lock(&philo->neighbor->fork_mutex);
-	if (!second_fork)
+	else
 	{
-		gettimeofday(&time_now, NULL);
-		printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
-		philo->fork = BUSY;
+		if ((*philo)->id != id)
+			printf("error: philo %d could not block neighbor's fork: %d\n", (*philo)->id, id);
+		else
+			printf("error: philo %d could not block his fork\n", id);
+		return (1);
 	}
+	return (0);
+}
+
+int	philo_take_a_fork(t_philo *philo)
+{
+	if (block_fork(&philo, philo->id))
+		return (1);
+	if (block_fork(&philo->neighbor, philo->id))
+		return (1);
+	return (0);
 }
 
 int	philo_eat(t_philo *philo)
@@ -48,10 +62,10 @@ int	philo_eat(t_philo *philo)
 	gettimeofday(&time_now, NULL);
 	printf("%ld %d is eating\n", time_now.tv_usec, philo->id);
 	usleep(philo->args->t_eat);
-	philo->fork = AVALIBLE;
-	philo->fork = AVALIBLE;
 	pthread_mutex_unlock(&philo->fork_mutex);
 	pthread_mutex_unlock(&philo->neighbor->fork_mutex);
+	philo->fork = AVALIBLE;
+	philo->fork = AVALIBLE;
 	if (philo->args->n_must_eat)
 	{
 		eat_counter++;
@@ -72,10 +86,14 @@ void	philo_sleep(t_philo *philo)
 
 void	set_at_the_table(t_philo *philo)
 {
-	philo_take_a_fork(philo);
-	if (philo_eat(philo))
-		return ;
-	philo_sleep(philo);
+	while (1)
+	{
+		if (philo_take_a_fork(philo))
+			return ;
+		if (philo_eat(philo))
+			return ;
+		philo_sleep(philo);
+	}
 }
 
 void	*join_meal(void	*arg)
