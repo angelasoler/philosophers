@@ -29,10 +29,7 @@ int	end_dinner(t_dinner *dinner)
 		else
 			pthread_join(dinner->philo[id].philosopher, (void **)&thread_ret);
 		if (thread_ret)
-		{
-			printf("Philo %d leaves the room\n", *thread_ret);
 			free(thread_ret);
-		}
 		id++;
 	}
 	free(dinner->philo);

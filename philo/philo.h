@@ -38,11 +38,11 @@ typedef enum s_fork
 
 typedef struct s_args
 {
-	int			n_philos;
-	int			t_die;
-	int			t_eat;
-	int			t_sleep;
-	int			n_must_eat;
+	int	n_philos;
+	int	t_die;
+	int	t_eat;
+	int	t_sleep;
+	int	n_must_eat;
 }	t_args;
 
 typedef struct s_philo
@@ -52,6 +52,7 @@ typedef struct s_philo
 	t_state			state;
 	int				id;
 	int				im_done;
+	int				meal_counter;
 	t_args			*args;
 	pthread_mutex_t	fork_mutex;
 	struct timeval	last_meal;

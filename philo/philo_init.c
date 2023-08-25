@@ -62,6 +62,7 @@ int	init_philos(t_dinner *dinner)
 	{
 		dinner->philo[id].args = &dinner->args;
 		dinner->philo[id].id = id;
+		dinner->philo[id].meal_counter = 0;
 		neig_id = id + 1;
 		if (neig_id == n_philos)
 			neig_id = 0;

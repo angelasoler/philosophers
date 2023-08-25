@@ -42,7 +42,6 @@ void	philo_take_a_fork(t_philo *philo)
 
 int	philo_eat(t_philo *philo)
 {
-	static int	eat_counter;
 	t_now		time_now;
 
 	gettimeofday(&time_now, NULL);
@@ -54,9 +53,12 @@ int	philo_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->neighbor->fork_mutex);
 	if (philo->args->n_must_eat)
 	{
-		eat_counter++;
-		if (eat_counter == philo->args->n_must_eat)
+		philo->meal_counter++;
+		if (philo->meal_counter == philo->args->n_must_eat)
+		{
+			print_philo(philo, 0);
 			return (1);
+		}
 	}
 	return (0);
 }

@@ -12,7 +12,6 @@
 
 #include "philo.h"
 
-// print_philo(philo, last_meal);
 int	alert_dead(void *arg)
 {
 	long int		last_meal;
@@ -23,6 +22,7 @@ int	alert_dead(void *arg)
 	gettimeofday(&time_now, NULL);
 	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
 				philo->args->t_eat;
+	// print_philo(philo, last_meal);
 	if (last_meal <= 0)
 		return (1);
 	return (0);
@@ -70,6 +70,7 @@ void	print_philo(t_philo *philo, long int last_meal)
 	printf("Philo:\n");
 	printf("  State: %s\n", state_to_string(philo->state));
 	printf("  ID: %d\n", philo->id);
+	printf("  meal_counter: %d\n", philo->meal_counter);
 	printf("  Im_done: %d\n", philo->im_done);
 	if (last_meal <= 0)
 		printf("  Starved: %s\n", "true");
