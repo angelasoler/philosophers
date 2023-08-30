@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/08/29 08:48:33 by asoler           ###   ########.fr       */
+/*   Updated: 2023/08/29 23:05:18 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	philo_take_second_fork(t_philo *philo)
 	
 	gettimeofday(&time_now, NULL);
 	printf("%ld %d is thinking\n", time_now.tv_usec, philo->id);
+	//ter um delay para o programa trocar entre threads
+	//ver se printf é thread safe e se o hellgrind nao reclama
 	if (philo->id != 0)
 	{
 		while (philo->neighbor->fork == BUSY)
@@ -120,6 +122,7 @@ void	set_at_the_table(t_philo *philo)
 		if (philo_eat(philo))
 			return ;
 		philo_sleep(philo);
+		//pensar
 	}
 }
 

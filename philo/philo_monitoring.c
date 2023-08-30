@@ -20,6 +20,7 @@ int	alert_dead(void *arg)
 
 	philo = (t_philo *)arg;
 	gettimeofday(&time_now, NULL);
+	//mutex para last_meal --helgrind
 	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
 				philo->args->t_eat;
 	// print_philo(philo, last_meal);
