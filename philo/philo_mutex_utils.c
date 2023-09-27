@@ -1,33 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   philo_mutex_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/04 00:48:43 by asoler            #+#    #+#             */
-/*   Updated: 2023/09/25 19:23:57 by asoler           ###   ########.fr       */
+/*   Created: 2023/09/27 21:52:29 by asoler            #+#    #+#             */
+/*   Updated: 2023/09/27 21:52:32 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char *argv[])
+int	philo_init_mutex(t_philo *philo)
 {
-	t_dinner	*dinner;
-
-	dinner = ft_calloc(1, sizeof(t_dinner));
-	if (argc < 5 || argc > 6)
-		return (printf("Wrong arguments\n"));
-	if (argc < 6)
-		dinner->args.n_must_eat = FALSE;
-	else
-		dinner->args.n_must_eat = TRUE;
-	if (init_data(&dinner->args, argv))
-		return (-1);
-	dinner->detach = init_dinner(dinner);
-	if (dinner->detach < 0)
-		return (printf("init philo fail\n"));
-	end_dinner(dinner);
+	if (pthread_mutex_init(&philo->fork_mutex, NULL) ||
+		pthread_mutex_init(&philo->last_meal_mutex, NULL) ||
+		pthread_mutex_init(&philo->im_done_mutex, NULL))
+		return (1);
 	return (0);
 }

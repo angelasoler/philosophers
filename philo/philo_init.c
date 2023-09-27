@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/07/22 23:20:39 by asoler           ###   ########.fr       */
+/*   Updated: 2023/09/27 20:48:11 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	init_philos(t_dinner *dinner)
 			neig_id = 0;
 		if (create_philosopher(&dinner->philo[id], &dinner->philo[neig_id]))
 			return (-1);
-		alloc_philo_list(&list, &dinner->philo[id], id);
+		alloc_philo_list(&list, &dinner->philo[id], &id);
 		id++;
 	}
 	create_threads(n_philos, dinner->philo);

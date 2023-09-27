@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/08/29 23:18:25 by asoler           ###   ########.fr       */
+/*   Updated: 2023/09/27 20:50:13 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ typedef struct s_philo
 	int				meal_counter;
 	t_args			*args;
 	pthread_mutex_t	fork_mutex;
+	pthread_mutex_t	last_meal_mutex;
+	pthread_mutex_t	im_done_mutex;
 	struct timeval	last_meal;
 	struct s_philo	*neighbor;
 }	t_philo;
@@ -73,7 +75,7 @@ typedef struct s_dinner
 }	t_dinner;
 
 t_list	*ft_lstlast(t_list *lst);
-int		alloc_philo_list(t_list **main_list, t_philo *philo, int id);
+int		alloc_philo_list(t_list **main_list, t_philo *philo, int *id);
 
 int		ft_isdigit(char c);
 int		ft_atoi(const char *nptr);

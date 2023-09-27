@@ -21,8 +21,10 @@ int	alert_dead(void *arg)
 	philo = (t_philo *)arg;
 	gettimeofday(&time_now, NULL);
 	//mutex para last_meal --helgrind
+	pthread_mutex_lock(&philo->last_meal_mutex);
 	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
 				philo->args->t_eat;
+	pthread_mutex_unlock(&philo->last_meal_mutex);
 	// print_philo(philo, last_meal);
 	if (last_meal <= 0)
 		return (1);
@@ -31,8 +33,13 @@ int	alert_dead(void *arg)
 
 int	verify_philos_state(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->im_done_mutex);
 	if (philo->im_done)
+	{
+		pthread_mutex_unlock(&philo->im_done_mutex);
 		return (1);
+
+	}
 	return (0);
 }
 

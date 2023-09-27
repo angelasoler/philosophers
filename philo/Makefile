@@ -11,7 +11,8 @@ SRC=philo.c \
 	philo_dinner.c \
 	philo_end_dinner.c \
 	philo_linked_list.c \
-	philo_monitoring.c
+	philo_monitoring.c \
+	philo_mutex_utils.c
 
 OBJ=$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
 
