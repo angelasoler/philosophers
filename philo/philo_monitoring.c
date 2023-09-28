@@ -40,6 +40,7 @@ int	verify_philos_state(t_philo *philo)
 		return (1);
 
 	}
+	pthread_mutex_unlock(&philo->im_done_mutex);
 	return (0);
 }
 
