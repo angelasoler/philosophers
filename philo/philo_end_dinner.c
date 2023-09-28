@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 23:19:18 by asoler            #+#    #+#             */
-/*   Updated: 2023/08/29 23:14:59 by asoler           ###   ########.fr       */
+/*   Updated: 2023/09/27 22:00:14 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	end_dinner(t_dinner *dinner)
 			pthread_join(dinner->philo[id].philosopher, (void **)&thread_ret);
 		if (thread_ret)
 			free(thread_ret);
+		free_mutex(&dinner->philo[id]);
 		id++;
 	}
 	free(dinner->philo);

@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/09/27 20:48:11 by asoler           ###   ########.fr       */
+/*   Updated: 2023/09/27 22:00:41 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int	init_dinner(t_dinner *dinner)
 		return (printf("philo malloc fail\n"));
 	while (i < n_philos)
 	{
-		if (pthread_mutex_init(&dinner->philo[i].fork_mutex, NULL))
-			return (printf("fork %d mutex fail\n", i));
+		if (philo_init_mutex(&dinner->philo[i]))
+			return (printf("%d mutex fail\n", i));
 		i++;
 	}
 	return (init_philos(dinner));

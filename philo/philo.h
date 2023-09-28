@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/09/27 20:50:13 by asoler           ###   ########.fr       */
+/*   Updated: 2023/09/27 22:01:09 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,8 @@ void	print_philo(t_philo *philo, long int last_meal);
 int		alert_dead(void *arg);
 int		ft_lstiter(t_list *lst, int (f)(void *));
 int		verify_data(char **args);
+
+int		philo_init_mutex(t_philo *philo);
+int		free_mutex(t_philo *philo);
 
 #endif
