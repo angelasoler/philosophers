@@ -46,13 +46,17 @@ int	verify_philos_state(t_philo *philo)
 
 int	ft_lstiter(t_list *lst, int (f)(void *))
 {
-	t_list	*aux;
+	t_list			*aux;
+	struct timeval	starve_timer;
 
 	aux = lst;
 	while (aux)
 	{
 		if (f(aux->philo))
-			return (printf("philo %d starved\n", aux->philo->id));
+		{
+			gettimeofday(&starve_timer, NULL);
+			return (printf("%ld %d died\n", starve_timer.tv_usec, aux->philo->id));
+		}
 		else
 			if (verify_philos_state(aux->philo))
 				return (0);
