@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/09/27 22:00:41 by asoler           ###   ########.fr       */
+/*   Updated: 2023/09/30 13:54:56 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	create_philosopher(t_philo *philo, t_philo *neighbor)
 	int	ret;
 
 	ret = 0;
-	id = philo->id;
+	id = philo->id + 1;
 	if (gettimeofday(&philo->last_meal, NULL))
 	{
 		ret = printf("Failed getting time of %d philo \n", id);
@@ -61,11 +61,11 @@ int	init_philos(t_dinner *dinner)
 	while (id < n_philos)
 	{
 		dinner->philo[id].args = &dinner->args;
-		dinner->philo[id].id = id;
+		dinner->philo[id].id = id + 1;
 		dinner->philo[id].meal_counter = 0;
-		neig_id = id + 1;
+		neig_id = id + 2;
 		if (neig_id == n_philos)
-			neig_id = 0;
+			neig_id = 1;
 		if (create_philosopher(&dinner->philo[id], &dinner->philo[neig_id]))
 			return (-1);
 		alloc_philo_list(&list, &dinner->philo[id], &id);

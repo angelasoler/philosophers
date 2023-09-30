@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/09/24 17:59:51 by asoler           ###   ########.fr       */
+/*   Updated: 2023/09/30 13:52:37 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	philo_take_first_fork(t_philo *philo)
 	int		fork;
 	t_now	time_now;
 
-	if (philo->id == 0)
+	if (philo->id == 1)
 	{
 		while (philo->neighbor->fork == BUSY)
 			continue ;
@@ -61,7 +61,7 @@ void	philo_take_second_fork(t_philo *philo)
 
 	//ter um delay para o programa trocar entre threads
 	//ver se printf é thread safe e se o hellgrind nao reclama
-	if (philo->id != 0)
+	if (philo->id != 1)
 	{
 		while (philo->neighbor->fork == BUSY)
 			continue ;
