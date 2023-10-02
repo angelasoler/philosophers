@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/09/27 22:01:09 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/02 20:18:24 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,10 @@ typedef struct s_list
 
 typedef struct s_dinner
 {
-	t_args	args;
-	t_philo	*philo;
-	int		detach;
+	t_args		args;
+	t_philo		*philo;
+	int			detach;
+	pthread_t	monitor_thread;
 }	t_dinner;
 
 t_list	*ft_lstlast(t_list *lst);
