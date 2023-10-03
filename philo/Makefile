@@ -6,12 +6,14 @@ THREAD_FLAG=-lpthread
 
 SRC=philo.c \
 	philo_utils.c \
+	philo_debug.c \
 	philo_ft_atoi.c \
 	philo_init.c \
 	philo_dinner.c \
 	philo_end_dinner.c \
 	philo_linked_list.c \
 	philo_monitoring.c \
+	philo_print_log.c \
 	philo_mutex_utils.c
 
 OBJ=$(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))

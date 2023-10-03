@@ -24,26 +24,29 @@ int	alert_dead(void *arg)
 	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
 				philo->args->t_eat;
 	pthread_mutex_unlock(&philo->last_meal_mutex);
-	// print_philo(philo, last_meal);
 	if (last_meal <= 0)
 		return (1);
 	return (0);
 }
 
-int	verify_philos_state(t_philo *philo)
+char	*verify_philos_state(t_philo *philo, int nphilos)
 {
+	char	*done_counter;
+
 	pthread_mutex_lock(&philo->im_done_mutex);
+	done_counter = calloc(nphilos + 1, sizeof(char));
 	if (philo->im_done)
 	{
+		done_counter[philo->id - 1] = TRUE;
 		pthread_mutex_unlock(&philo->im_done_mutex);
-		return (1);
+		return (done_counter);
 
 	}
 	pthread_mutex_unlock(&philo->im_done_mutex);
 	return (0);
 }
 
-int	philo_everybody_done(char *done_counter, int nphilo)
+int	philo_everybodys_done(char *done_counter, int nphilo)
 {
 	int	i;
 	int	cnt_true;
@@ -57,59 +60,37 @@ int	philo_everybody_done(char *done_counter, int nphilo)
 		i++;
 	}
 	if (cnt_true == nphilo)
+	{
+		free(done_counter);
 		return (1);
+	}
 	return (0);
 }
 
 int	ft_lstiter(t_list *lst, int (f)(void *))
 {
-	t_list			*aux;
-	struct timeval	starve_timer;
-	static char		*done_counter;
+	char	*done_counter;
+	t_list	*aux;
+	int		nphilos;
 
 	aux = lst;
-	done_counter = calloc(aux->philo->args->n_philos, sizeof(char));
+	// pthread_mutex_lock(&philo->nphilos_mutex);
+	nphilos = aux->philo->args->n_philos;
+	// pthread_mutex_unlock(&philo->nphilos_mutex);
 	while (aux)
 	{
 		if (f(aux->philo))
 		{
-			gettimeofday(&starve_timer, NULL);
-			return (printf("%ld %d died\n", starve_timer.tv_usec, aux->philo->id));
+			philo_print_log(aux->philo, DIED);
+			return (1);
 		}
 		else
-		{
-			if (verify_philos_state(aux->philo))
-				done_counter[aux->philo->id - 1] = TRUE;
-		}
-		if (philo_everybody_done(done_counter, aux->philo->args->n_philos))
+			done_counter = verify_philos_state(aux->philo, nphilos);
+		if (philo_everybodys_done(done_counter, nphilos))
 			return (0);
 		aux = aux->next;
 	}
 	printf("circle linked list fail\n");
 	exit(1);
 	return (0);
-}
-
-char	*state_to_string(t_state state)
-{
-	if (state == EAT)
-		return ("EAT");
-	else if (state == THINK)
-		return ("THINK");
-	else if (state == SLEEP)
-		return ("SLEEP");
-	return ("NULL");
-}
-
-void	print_philo(t_philo *philo, long int last_meal)
-{
-	printf("Philo:\n");
-	printf("  State: %s\n", state_to_string(philo->state));
-	printf("  ID: %d\n", philo->id);
-	printf("  meal_counter: %d\n", philo->meal_counter);
-	printf("  Im_done: %d\n", philo->im_done);
-	if (last_meal <= 0)
-		printf("  Starved: %s\n", "true");
-	else
-		printf("  Starved: %s\n", "false");
 }

@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/02 20:18:24 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/02 23:55:49 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ typedef enum s_state
 {
 	EAT,
 	THINK,
-	SLEEP
+	SLEEP,
+	FORK,
+	DIED
 }	t_state;
 
 typedef enum s_fork
@@ -55,8 +57,10 @@ typedef struct s_philo
 	int				meal_counter;
 	t_args			*args;
 	pthread_mutex_t	fork_mutex;
+	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	last_meal_mutex;
 	pthread_mutex_t	im_done_mutex;
+	pthread_mutex_t	nphilos_mutex;
 	struct timeval	last_meal;
 	struct s_philo	*neighbor;
 }	t_philo;
@@ -96,5 +100,6 @@ int		verify_data(char **args);
 
 int		philo_init_mutex(t_philo *philo);
 int		free_mutex(t_philo *philo);
+void	philo_print_log(t_philo *philo, int state);
 
 #endif
