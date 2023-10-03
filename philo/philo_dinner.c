@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/09/30 13:52:37 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/02 23:06:08 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	philo_take_first_fork(t_philo *philo)
 		fork = pthread_mutex_lock(&philo->neighbor->fork_mutex);
 		if (!fork)
 		{
-			gettimeofday(&time_now, NULL);
-			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
 			philo->neighbor->fork = BUSY;
 			pthread_mutex_unlock(&philo->neighbor->fork_mutex);
+			gettimeofday(&time_now, NULL);
+			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
 		}
 	}
 	else
@@ -46,10 +46,10 @@ void	philo_take_first_fork(t_philo *philo)
 		fork = pthread_mutex_lock(&philo->fork_mutex);
 		if (!fork)
 		{
-			gettimeofday(&time_now, NULL);
-			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
 			philo->fork = BUSY;
 			pthread_mutex_unlock(&philo->fork_mutex);
+			gettimeofday(&time_now, NULL);
+			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
 		}
 	}
 }
@@ -68,10 +68,10 @@ void	philo_take_second_fork(t_philo *philo)
 		fork = pthread_mutex_lock(&philo->neighbor->fork_mutex);
 		if (!fork)
 		{
-			gettimeofday(&time_now, NULL);
-			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
 			philo->neighbor->fork = BUSY;
 			pthread_mutex_unlock(&philo->neighbor->fork_mutex);
+			gettimeofday(&time_now, NULL);
+			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
 		}
 	}
 	else
@@ -81,17 +81,17 @@ void	philo_take_second_fork(t_philo *philo)
 		fork = pthread_mutex_lock(&philo->fork_mutex);
 		if (!fork)
 		{
-			gettimeofday(&time_now, NULL);
-			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
 			philo->fork = BUSY;
 			pthread_mutex_unlock(&philo->fork_mutex);
+			gettimeofday(&time_now, NULL);
+			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
 		}
 	}
 }
 
 int	philo_eat(t_philo *philo)
 {
-	t_now		time_now;
+	t_now	time_now;
 
 	gettimeofday(&time_now, NULL);
 	printf("%ld %d is eating\n", time_now.tv_usec, philo->id);
