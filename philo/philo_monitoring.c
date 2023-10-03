@@ -33,35 +33,36 @@ char	*verify_philos_state(t_philo *philo, int nphilos)
 {
 	char	*done_counter;
 
+	done_counter = ft_calloc(nphilos + 1, sizeof(char));
 	pthread_mutex_lock(&philo->im_done_mutex);
-	done_counter = calloc(nphilos + 1, sizeof(char));
 	if (philo->im_done)
 	{
 		done_counter[philo->id - 1] = TRUE;
 		pthread_mutex_unlock(&philo->im_done_mutex);
 		return (done_counter);
-
 	}
 	pthread_mutex_unlock(&philo->im_done_mutex);
-	return (0);
+	return (done_counter);
 }
 
-int	philo_everybodys_done(char *done_counter, int nphilo)
+int	philo_everybodys_done(char **done_counter, int nphilo)
 {
 	int	i;
 	int	cnt_true;
+	char	*aux;
 
 	i = 0;
 	cnt_true = 0;
+	aux = *done_counter;
 	while (i < nphilo)
 	{
-		if (done_counter[i] == TRUE)
+		if (aux[i] == TRUE)
 			cnt_true++;
 		i++;
 	}
 	if (cnt_true == nphilo)
 	{
-		free(done_counter);
+		free(aux);
 		return (1);
 	}
 	return (0);
@@ -86,7 +87,7 @@ int	ft_lstiter(t_list *lst, int (f)(void *))
 		}
 		else
 			done_counter = verify_philos_state(aux->philo, nphilos);
-		if (philo_everybodys_done(done_counter, nphilos))
+		if (philo_everybodys_done(&done_counter, nphilos))
 			return (0);
 		aux = aux->next;
 	}

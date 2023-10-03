@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/02 23:39:56 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/03 00:36:41 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	philo_take_first_fork(t_philo *philo)
 
 	if (philo->id == 1)
 	{
+		while (philo->neighbor->fork == BUSY)
+			continue ;
 		fork = pthread_mutex_lock(&philo->neighbor->fork_mutex);
 		if (!fork)
 		{
@@ -34,6 +36,8 @@ void	philo_take_first_fork(t_philo *philo)
 	}
 	else
 	{
+		while (philo->fork == BUSY)
+			continue ;
 		fork = pthread_mutex_lock(&philo->fork_mutex);
 		if (!fork)
 		{
@@ -50,6 +54,8 @@ void	philo_take_second_fork(t_philo *philo)
 
 	if (philo->id != 1)
 	{
+		while (philo->neighbor->fork == BUSY)
+			continue ;
 		fork = pthread_mutex_lock(&philo->neighbor->fork_mutex);
 		if (!fork)
 		{
@@ -60,6 +66,8 @@ void	philo_take_second_fork(t_philo *philo)
 	}
 	else
 	{
+		while (philo->fork == BUSY)
+			continue ;
 		fork = pthread_mutex_lock(&philo->fork_mutex);
 		if (!fork)
 		{

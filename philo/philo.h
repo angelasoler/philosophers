@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/02 23:55:49 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/03 00:37:57 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct s_philo
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	last_meal_mutex;
 	pthread_mutex_t	im_done_mutex;
-	pthread_mutex_t	nphilos_mutex;
 	struct timeval	last_meal;
 	struct s_philo	*neighbor;
 }	t_philo;
