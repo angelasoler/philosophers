@@ -6,11 +6,16 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/03 22:40:10 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/04 20:47:20 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	philo_leaves_the_table(t_philo *philo)
+{
+	return (philo->args->alert_dead); //alert end?
+}
 
 void	philo_think(t_philo *philo)
 {
@@ -100,7 +105,7 @@ int	philo_eat(t_philo *philo)
 		if (philo->meal_counter == philo->args->n_must_eat)
 		{
 			pthread_mutex_lock(&philo->im_done_mutex);
-			philo->im_done = 1;
+			philo->im_done = TRUE;
 			pthread_mutex_unlock(&philo->im_done_mutex);
 			return (1);
 		}
