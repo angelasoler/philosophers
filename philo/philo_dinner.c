@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/03 00:36:41 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/03 22:40:10 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	philo_take_first_fork(t_philo *philo)
 		if (!fork)
 		{
 			philo->neighbor->fork = BUSY;
-			pthread_mutex_unlock(&philo->neighbor->fork_mutex);
+			// pthread_mutex_unlock(&philo->neighbor->fork_mutex);
 			philo_print_log(philo, FORK);
 		}
 	}
@@ -42,7 +42,7 @@ void	philo_take_first_fork(t_philo *philo)
 		if (!fork)
 		{
 			philo->fork = BUSY;
-			pthread_mutex_unlock(&philo->fork_mutex);
+			// pthread_mutex_unlock(&philo->fork_mutex);
 			philo_print_log(philo, FORK);
 		}
 	}
@@ -60,7 +60,7 @@ void	philo_take_second_fork(t_philo *philo)
 		if (!fork)
 		{
 			philo->neighbor->fork = BUSY;
-			pthread_mutex_unlock(&philo->neighbor->fork_mutex);
+			// pthread_mutex_unlock(&philo->neighbor->fork_mutex);
 			philo_print_log(philo, FORK);
 		}
 	}
@@ -72,7 +72,7 @@ void	philo_take_second_fork(t_philo *philo)
 		if (!fork)
 		{
 			philo->fork = BUSY;
-			pthread_mutex_unlock(&philo->fork_mutex);
+			// pthread_mutex_unlock(&philo->fork_mutex);
 			philo_print_log(philo, FORK);
 		}
 	}
@@ -83,11 +83,11 @@ int	philo_eat(t_philo *philo)
 	philo_print_log(philo, EAT);
 	usleep(philo->args->t_eat);
 	
-	pthread_mutex_lock(&philo->fork_mutex);
+	// pthread_mutex_lock(&philo->fork_mutex);
 	philo->fork = AVALIBLE;
 	pthread_mutex_unlock(&philo->fork_mutex);
 
-	pthread_mutex_lock(&philo->neighbor->fork_mutex);
+	// pthread_mutex_lock(&philo->neighbor->fork_mutex);
 	philo->neighbor->fork = AVALIBLE;
 	pthread_mutex_unlock(&philo->neighbor->fork_mutex);
 	
