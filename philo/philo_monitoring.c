@@ -12,13 +12,11 @@
 
 #include "philo.h"
 
-int	alert_dead(void *arg)
+int	alert_dead(t_philo *philo)
 {
 	long int		last_meal;
 	struct timeval	time_now;
-	t_philo			*philo;
 
-	philo = (t_philo *)arg;
 	gettimeofday(&time_now, NULL);
 	pthread_mutex_lock(&philo->last_meal_mutex);
 	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
@@ -68,26 +66,30 @@ int	philo_everybodys_done(char **done_counter, int nphilo)
 	return (0);
 }
 
-int	ft_lstiter(t_list *lst, int (f)(void *), int nphilos)
+void	*ft_lstiter(void *lst)
 {
 	char	*done_counter;
 	t_list	*aux;
+	int		nphilos;
+	int		*ret;
 
-	aux = lst;
+	aux = (t_list *)lst;
+	nphilos = aux->philo->args->n_philos;
+	ret = ft_calloc(sizeof(int), 1);
 	while (aux)
 	{
-		if (f(aux->philo))
+		if (alert_dead(aux->philo))
 		{
 			philo_print_log(aux->philo, DIED);
-			return (1);
+			*ret = 1;
+			pthread_exit((void *)ret);
 		}
 		else
 			done_counter = verify_philos_state(aux->philo, nphilos);
 		if (philo_everybodys_done(&done_counter, nphilos))
-			return (0);
+			pthread_exit((void *)ret);
 		aux = aux->next;
 	}
 	printf("circle linked list fail\n");
 	exit(1);
-	return (0);
 }

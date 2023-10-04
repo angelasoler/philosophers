@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/03 22:06:08 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/04 20:22:35 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,13 +72,10 @@ int	init_philos(t_dinner *dinner)
 		id++;
 	}
 	create_threads(n_philos, dinner->philo);
-	if (ft_lstiter(list, alert_dead, n_philos))
-		return (1);
-	// if (pthread_create(&dinner->monitoring_thread, NULL, alert_dead, dinner->philo))
-	// {
-	// 	ret = printf("Philo thread %d fail\n", id);
-	// 	return (ret);
-	// }
+	// if (ft_lstiter(list, alert_dead, n_philos))
+	// 	return (1);
+	if (pthread_create(&dinner->monitor_thread, NULL, ft_lstiter, list))
+		return (printf("Philo thread %d fail\n", id));
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/03 21:59:24 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/04 20:23:53 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_args
 	int	t_eat;
 	int	t_sleep;
 	int	n_must_eat;
+	int	alert_death;
 }	t_args;
 
 typedef struct s_philo
@@ -93,8 +94,8 @@ void	*join_meal(void *arg);
 int		end_dinner(t_dinner *dinner);
 
 void	print_philo(t_philo *philo, long int last_meal);
-int		alert_dead(void *arg);
-int		ft_lstiter(t_list *lst, int (f)(void *), int nphilos);
+int		alert_dead(t_philo *philo);
+void	*ft_lstiter(void *lst);
 int		verify_data(char **args);
 
 int		philo_init_mutex(t_philo *philo);
