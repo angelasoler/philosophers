@@ -68,16 +68,12 @@ int	philo_everybodys_done(char **done_counter, int nphilo)
 	return (0);
 }
 
-int	ft_lstiter(t_list *lst, int (f)(void *))
+int	ft_lstiter(t_list *lst, int (f)(void *), int nphilos)
 {
 	char	*done_counter;
 	t_list	*aux;
-	int		nphilos;
 
 	aux = lst;
-	// pthread_mutex_lock(&philo->nphilos_mutex);
-	nphilos = aux->philo->args->n_philos;
-	// pthread_mutex_unlock(&philo->nphilos_mutex);
 	while (aux)
 	{
 		if (f(aux->philo))
