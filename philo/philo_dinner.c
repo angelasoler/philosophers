@@ -14,7 +14,7 @@
 
 int	philo_leaves_the_table(t_philo *philo)
 {
-	return (*philo->args->alert_end);
+	return (*philo->alert_end);
 }
 
 void	philo_think(t_philo *philo)

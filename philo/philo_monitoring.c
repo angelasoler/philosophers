@@ -24,7 +24,7 @@ int	alert_dead(t_philo *philo)
 	if (last_meal_timer > last_meal)
 	{
 		pthread_mutex_lock(&philo->alert_dead_mutex);
-		*philo->args->alert_end = TRUE;
+		*philo->alert_end = TRUE;
 		pthread_mutex_unlock(&philo->alert_dead_mutex);
 		return (1);
 	}
@@ -93,7 +93,7 @@ void	*ft_lstiter(void *lst)
 		if (philo_everybodys_done(&done_counter, nphilos))
 		{
 			pthread_mutex_lock(&aux->philo->alert_dead_mutex);
-			*aux->philo->args->alert_end = TRUE;
+			*aux->philo->alert_end = TRUE;
 			pthread_mutex_unlock(&aux->philo->alert_dead_mutex);
 			pthread_exit((void *)ret);
 		}
