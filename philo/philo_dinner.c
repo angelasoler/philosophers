@@ -14,7 +14,7 @@
 
 int	philo_leaves_the_table(t_philo *philo)
 {
-	return (philo->args->alert_dead); //alert end?
+	return (*philo->args->alert_end);
 }
 
 void	philo_think(t_philo *philo)
@@ -35,7 +35,6 @@ void	philo_take_first_fork(t_philo *philo)
 		if (!fork)
 		{
 			philo->neighbor->fork = BUSY;
-			// pthread_mutex_unlock(&philo->neighbor->fork_mutex);
 			philo_print_log(philo, FORK);
 		}
 	}
@@ -47,7 +46,6 @@ void	philo_take_first_fork(t_philo *philo)
 		if (!fork)
 		{
 			philo->fork = BUSY;
-			// pthread_mutex_unlock(&philo->fork_mutex);
 			philo_print_log(philo, FORK);
 		}
 	}
@@ -65,7 +63,6 @@ void	philo_take_second_fork(t_philo *philo)
 		if (!fork)
 		{
 			philo->neighbor->fork = BUSY;
-			// pthread_mutex_unlock(&philo->neighbor->fork_mutex);
 			philo_print_log(philo, FORK);
 		}
 	}
@@ -77,7 +74,6 @@ void	philo_take_second_fork(t_philo *philo)
 		if (!fork)
 		{
 			philo->fork = BUSY;
-			// pthread_mutex_unlock(&philo->fork_mutex);
 			philo_print_log(philo, FORK);
 		}
 	}
@@ -88,11 +84,9 @@ int	philo_eat(t_philo *philo)
 	philo_print_log(philo, EAT);
 	usleep(philo->args->t_eat);
 	
-	// pthread_mutex_lock(&philo->fork_mutex);
 	philo->fork = AVALIBLE;
 	pthread_mutex_unlock(&philo->fork_mutex);
 
-	// pthread_mutex_lock(&philo->neighbor->fork_mutex);
 	philo->neighbor->fork = AVALIBLE;
 	pthread_mutex_unlock(&philo->neighbor->fork_mutex);
 	
@@ -123,11 +117,21 @@ void	set_at_the_table(t_philo *philo)
 {
 	while (1)
 	{
+		// if (philo_leaves_the_table(philo))
+		// 	return ;
 		philo_take_first_fork(philo);
+		// if (philo_leaves_the_table(philo))
+		// 	return ;
 		philo_take_second_fork(philo);
+		// if (philo_leaves_the_table(philo))
+		// 	return ;
 		if (philo_eat(philo))
 			return ;
+		// if (philo_leaves_the_table(philo))
+		// return ;
 		philo_sleep(philo);
+		// if (philo_leaves_the_table(philo))
+		// 	return ;
 		philo_think(philo);
 	}
 }

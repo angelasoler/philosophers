@@ -14,11 +14,6 @@
 
 int	create_philosopher(t_philo *philo, t_philo *neighbor)
 {
-	int	id;
-	int	ret;
-
-	ret = 0;
-	id = philo->id + 1;
 	philo->last_meal = gettime_milisec_convertion();
 	philo->neighbor = neighbor;
 	return (0);
@@ -57,6 +52,7 @@ int	init_philos(t_dinner *dinner)
 	while (id < n_philos)
 	{
 		dinner->philo[id].args = &dinner->args;
+		dinner->philo[id].alert_end = &dinner->alert_end;
 		dinner->philo[id].id = id + 1;
 		dinner->philo[id].meal_counter = 0;
 		neig_id = id + 1;
@@ -68,8 +64,6 @@ int	init_philos(t_dinner *dinner)
 		id++;
 	}
 	create_threads(n_philos, dinner->philo);
-	// if (ft_lstiter(list, alert_dead, n_philos))
-	// 	return (1);
 	if (pthread_create(&dinner->monitor_thread, NULL, ft_lstiter, list))
 		return (printf("Philo thread %d fail\n", id));
 	return (0);

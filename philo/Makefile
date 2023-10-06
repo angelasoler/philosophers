@@ -43,7 +43,7 @@ fclean: clean
 	rm -rf $(NAME)
 
 clean:
-	rm -rf *.o
+	rm -rf obj/*.o
 
 run:
 	$(RUN)

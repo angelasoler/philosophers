@@ -20,7 +20,7 @@ int	end_dinner(t_dinner *dinner)
 
 	id = 0;
 	n_philos = dinner->args.n_philos;
-	thread_ret = NULL;
+	thread_ret = ft_calloc(sizeof(int), 1);
 	pthread_join(dinner->monitor_thread, (void **)&thread_ret);
 	if (*thread_ret)
 		printf("starvation: monitor thread out\n");

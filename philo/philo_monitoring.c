@@ -24,7 +24,7 @@ int	alert_dead(t_philo *philo)
 	if (last_meal_timer > last_meal)
 	{
 		pthread_mutex_lock(&philo->alert_dead_mutex);
-		philo->args->alert_dead = TRUE;
+		*philo->args->alert_end = TRUE;
 		pthread_mutex_unlock(&philo->alert_dead_mutex);
 		return (1);
 	}
@@ -91,7 +91,12 @@ void	*ft_lstiter(void *lst)
 		else
 			done_counter = verify_philos_state(aux->philo, nphilos);
 		if (philo_everybodys_done(&done_counter, nphilos))
+		{
+			pthread_mutex_lock(&aux->philo->alert_dead_mutex);
+			*aux->philo->args->alert_end = TRUE;
+			pthread_mutex_unlock(&aux->philo->alert_dead_mutex);
 			pthread_exit((void *)ret);
+		}
 		aux = aux->next;
 	}
 	printf("circle linked list fail\n");

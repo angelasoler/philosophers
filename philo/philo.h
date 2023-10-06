@@ -45,11 +45,11 @@ typedef struct s_args
 	int	t_eat;
 	int	t_sleep;
 	int	n_must_eat;
-	int	alert_dead;
 }	t_args;
 
 typedef struct s_philo
 {
+	int				*alert_end;
 	pthread_t		philosopher;
 	t_fork			fork;
 	t_state			state;
@@ -74,6 +74,7 @@ typedef struct s_list
 
 typedef struct s_dinner
 {
+	int			alert_end;
 	t_args		args;
 	t_philo		*philo;
 	int			detach;
