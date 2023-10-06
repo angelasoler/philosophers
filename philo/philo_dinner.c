@@ -97,7 +97,7 @@ int	philo_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->neighbor->fork_mutex);
 	
 	pthread_mutex_lock(&philo->last_meal_mutex);
-	gettimeofday(&philo->last_meal, NULL);
+	philo->last_meal = gettime_milisec_convertion();
 	pthread_mutex_unlock(&philo->last_meal_mutex);
 	if (philo->args->n_must_eat)
 	{

@@ -19,11 +19,7 @@ int	create_philosopher(t_philo *philo, t_philo *neighbor)
 
 	ret = 0;
 	id = philo->id + 1;
-	if (gettimeofday(&philo->last_meal, NULL))
-	{
-		ret = printf("Failed getting time of %d philo \n", id);
-		return (ret);
-	}
+	philo->last_meal = gettime_milisec_convertion();
 	philo->neighbor = neighbor;
 	return (0);
 }

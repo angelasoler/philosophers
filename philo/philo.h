@@ -62,7 +62,7 @@ typedef struct s_philo
 	pthread_mutex_t	last_meal_mutex;
 	pthread_mutex_t	im_done_mutex;
 	pthread_mutex_t	alert_dead_mutex;
-	struct timeval	last_meal;
+	int				last_meal;
 	struct s_philo	*neighbor;
 }	t_philo;
 
@@ -102,5 +102,6 @@ int		verify_data(char **args);
 int		philo_init_mutex(t_philo *philo);
 int		free_mutex(t_philo *philo);
 void	philo_print_log(t_philo *philo, int state);
+int		gettime_milisec_convertion(void);
 
 #endif

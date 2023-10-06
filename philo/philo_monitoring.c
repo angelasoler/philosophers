@@ -14,19 +14,18 @@
 
 int	alert_dead(t_philo *philo)
 {
-	long int		last_meal;
-	struct timeval	time_now;
+	int	last_meal;
+	int	last_meal_timer;
 
-	gettimeofday(&time_now, NULL);
 	pthread_mutex_lock(&philo->last_meal_mutex);
-	last_meal = (time_now.tv_usec - philo->last_meal.tv_usec) - \
-				philo->args->t_eat;
+	last_meal_timer = (gettime_milisec_convertion() - philo->last_meal);
+	last_meal = philo->args->t_eat;
 	pthread_mutex_unlock(&philo->last_meal_mutex);
-	if (last_meal <= 0)
+	if (last_meal_timer > last_meal)
 	{
-			pthread_mutex_lock(&philo->alert_dead_mutex);
-			philo->args->alert_dead = TRUE;
-			pthread_mutex_unlock(&philo->alert_dead_mutex);
+		pthread_mutex_lock(&philo->alert_dead_mutex);
+		philo->args->alert_dead = TRUE;
+		pthread_mutex_unlock(&philo->alert_dead_mutex);
 		return (1);
 	}
 	return (0);
