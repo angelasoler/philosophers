@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/04 20:47:20 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 10:28:56 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ int	philo_eat(t_philo *philo)
 			pthread_mutex_lock(&philo->im_done_mutex);
 			philo->im_done = TRUE;
 			pthread_mutex_unlock(&philo->im_done_mutex);
-			return (1);
 		}
 	}
 	return (0);
@@ -117,21 +116,20 @@ void	set_at_the_table(t_philo *philo)
 {
 	while (1)
 	{
-		// if (philo_leaves_the_table(philo))
-		// 	return ;
-		philo_take_first_fork(philo);
-		// if (philo_leaves_the_table(philo))
-		// 	return ;
-		philo_take_second_fork(philo);
-		// if (philo_leaves_the_table(philo))
-		// 	return ;
-		if (philo_eat(philo))
+		if (philo_leaves_the_table(philo))
 			return ;
-		// if (philo_leaves_the_table(philo))
-		// return ;
+		philo_take_first_fork(philo);
+		if (philo_leaves_the_table(philo))
+			return ;
+		philo_take_second_fork(philo);
+		if (philo_leaves_the_table(philo))
+			return ;
+		philo_eat(philo)
+		if (philo_leaves_the_table(philo))
+		return ;
 		philo_sleep(philo);
-		// if (philo_leaves_the_table(philo))
-		// 	return ;
+		if (philo_leaves_the_table(philo))
+			return ;
 		philo_think(philo);
 	}
 }

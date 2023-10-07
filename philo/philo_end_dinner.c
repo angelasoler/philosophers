@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 23:19:18 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/04 20:25:20 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 10:26:02 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int	end_dinner(t_dinner *dinner)
 	n_philos = dinner->args.n_philos;
 	thread_ret = ft_calloc(sizeof(int), 1);
 	pthread_join(dinner->monitor_thread, (void **)&thread_ret);
-	if (*thread_ret)
-		printf("starvation: monitor thread out\n");
-	else
-		printf("all eated: monitor thread out\n");
+	// if (*thread_ret)
+	// 	printf("starvation: monitor thread out\n");
+	// else
+	// 	printf("all eated: monitor thread out\n");
 	while (id < n_philos)
 	{
 		pthread_mutex_destroy(&dinner->philo[id].fork_mutex);

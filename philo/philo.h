@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/04 20:46:39 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 10:08:37 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ int		init_dinner(t_dinner *dinner);
 void	*join_meal(void *arg);
 int		end_dinner(t_dinner *dinner);
 
-void	print_philo(t_philo *philo, long int last_meal);
 int		alert_dead(t_philo *philo);
 void	*ft_lstiter(void *lst);
 int		verify_data(char **args);
@@ -104,5 +103,8 @@ int		philo_init_mutex(t_philo *philo);
 int		free_mutex(t_philo *philo);
 void	philo_print_log(t_philo *philo, int state);
 int		gettime_milisec_convertion(void);
+
+void	print_args(t_args *data, const char *where);
+void	print_philo(t_philo *philo, long int last_meal);
 
 #endif

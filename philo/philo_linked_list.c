@@ -57,6 +57,7 @@ int	alloc_philo_list(t_list **main_list, t_philo *philo, int *id)
 	t_list	*list;
 	t_list	*last;
 
+	// print_args(philo->args, "ALLOC LIST");
 	list = ft_lstnew((void *)philo);
 	n_philos = philo->args->n_philos;
 	if (main_list)
