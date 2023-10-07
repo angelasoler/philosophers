@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 23:13:05 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 11:29:02 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 19:02:36 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,22 @@ void	milisec_sleep(long duration)
 
 void	philo_print_log(t_philo *philo, int state)
 {
-	int	time_now;
+	static long	init_timer;
+	long	time_now;
 
-	time_now = gettime_milisec_convertion();
+	if (!init_timer)
+		init_timer = gettime_milisec_convertion();
+	time_now = gettime_milisec_convertion() - init_timer;
 	pthread_mutex_lock(&philo->print_mutex);
 	if (state == EAT)
-		printf("%d %d is eating\n", time_now, philo->id);
+		printf("%ld %d is eating\n", time_now, philo->id);
 	else if (state == THINK)
-		printf("%d %d is thinking\n", time_now, philo->id);
+		printf("%ld %d is thinking\n", time_now, philo->id);
 	else if (state == SLEEP)
-		printf("%d %d is sleeping\n", time_now, philo->id);
+		printf("%ld %d is sleeping\n", time_now, philo->id);
 	else if (state == FORK)
-		printf("%d %d has taken a fork\n", time_now, philo->id);
+		printf("%ld %d has taken a fork\n", time_now, philo->id);
 	else if (state == DIED)
-		printf("%d %d died\n", time_now, philo->id);
+		printf("%ld %d died\n", time_now, philo->id);
 	pthread_mutex_unlock(&philo->print_mutex);
 }
