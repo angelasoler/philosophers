@@ -23,9 +23,9 @@ int	alert_dead(t_philo *philo)
 	pthread_mutex_unlock(&philo->last_meal_mutex);
 	if (last_meal_timer > last_meal)
 	{
+		pthread_mutex_lock(philo->alert_end_mutex);
 		*philo->alert_end = TRUE;
-		pthread_mutex_lock(&philo->alert_dead_mutex);
-		pthread_mutex_unlock(&philo->alert_dead_mutex);
+		pthread_mutex_unlock(philo->alert_end_mutex);
 		return (1);
 	}
 	return (0);
@@ -83,15 +83,19 @@ void	*ft_lstiter(void *lst)
 		if (alert_dead(aux->philo))
 		{
 			philo_print_log(aux->philo, DIED);
+			// free(done_counter);
+			// freelist(aux);
 			return ((void *)0);
 		}
 		else
 			done_counter = verify_philos_state(aux->philo, nphilos);
 		if (philo_everybodys_done(&done_counter, nphilos))
 		{
-			pthread_mutex_lock(&aux->philo->alert_dead_mutex);
+			pthread_mutex_lock(aux->philo->alert_end_mutex);
 			*aux->philo->alert_end = TRUE;
-			pthread_mutex_unlock(&aux->philo->alert_dead_mutex);
+			pthread_mutex_unlock(aux->philo->alert_end_mutex);
+			free(done_counter);
+			// freelist(aux);
 			return ((void *)0);
 		}
 		aux = aux->next;

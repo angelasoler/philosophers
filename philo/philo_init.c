@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 16:32:05 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 20:28:00 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,23 @@ int	create_threads(int n_philos, t_philo *philo)
 	return (ret);
 }
 
+void	freelist(t_list *head)
+{
+	t_list *current;
+	t_list *start;
+	t_list *next;
+
+	current = head;
+	start = head;
+	while (current->next != start)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	free(current);
+}
+
 int	init_philos(t_dinner *dinner)
 {
 	int		id;
@@ -55,6 +72,7 @@ int	init_philos(t_dinner *dinner)
 		dinner->philo[id].alert_end = &dinner->alert_end;
 		dinner->philo[id].id = id + 1;
 		dinner->philo[id].meal_counter = 0;
+		dinner->philo[id].alert_end_mutex = &dinner->alert_end_mutex;
 		neig_id = id + 1;
 		if (neig_id == n_philos)
 			neig_id = 0;
@@ -66,6 +84,9 @@ int	init_philos(t_dinner *dinner)
 	create_threads(n_philos, dinner->philo);
 	if (pthread_create(&dinner->monitor_thread, NULL, ft_lstiter, list))
 		return (printf("Philo thread %d fail\n", id));
+	pthread_join(dinner->monitor_thread, NULL);
+	end_dinner(dinner);
+	freelist(list);
 	return (0);
 }
 
@@ -85,6 +106,7 @@ int	init_dinner(t_dinner *dinner)
 			return (printf("%d mutex fail\n", i));
 		i++;
 	}
+	pthread_mutex_init(&dinner->alert_end_mutex, NULL);
 	return (init_philos(dinner));
 }
 

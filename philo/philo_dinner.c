@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 16:55:07 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 20:26:33 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	philo_leaves_the_table(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->alert_dead_mutex);
+	pthread_mutex_lock(philo->alert_end_mutex);
 	if (*philo->alert_end)
 	{
-		pthread_mutex_unlock(&philo->alert_dead_mutex);
+		pthread_mutex_unlock(philo->alert_end_mutex);
 		return (TRUE);
 	}
-	pthread_mutex_unlock(&philo->alert_dead_mutex);
+	pthread_mutex_unlock(philo->alert_end_mutex);
 	return (FALSE);
 }
 
@@ -58,7 +58,6 @@ int	philo_take_a_fork(t_philo *philo, int neighboor)
 		pthread_mutex_lock(&philo->neighbor->fork_mutex);
 		philo->neighbor->fork = BUSY;
 	}
-	philo_print_log(philo, FORK);
 	if (philo_leaves_the_table(philo) || philo->args->n_philos == 1)
 	{
 		if (!neighboor)
@@ -67,6 +66,7 @@ int	philo_take_a_fork(t_philo *philo, int neighboor)
 			pthread_mutex_unlock(&philo->neighbor->fork_mutex);
 		return (1);
 	}
+	philo_print_log(philo, FORK);
 	return (0);
 }
 
@@ -128,12 +128,9 @@ void	set_at_the_table(t_philo *philo)
 
 void	*join_meal(void	*arg)
 {
-	int			*ret;
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
-	ret = ft_calloc(sizeof(int), 1);
-	*ret = philo->id;
 	set_at_the_table(philo);
 	return ((void *)0);
 }

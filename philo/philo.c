@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:43 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 14:12:13 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 20:22:08 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ int	main(int argc, char *argv[])
 		free(dinner);
 		return (-1);
 	}
-	dinner->detach = init_dinner(dinner);
-	if (dinner->detach < 0)
-		return (printf("init philo fail\n"));
-	end_dinner(dinner);
+	init_dinner(dinner);
+	// end_dinner(dinner);
 	return (0);
 }
