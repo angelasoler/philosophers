@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 23:19:18 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 14:15:22 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 17:02:08 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,9 @@ int	end_dinner(t_dinner *dinner)
 	pthread_join(dinner->monitor_thread, NULL);
 	while (id < n_philos)
 	{
-		pthread_mutex_destroy(&dinner->philo[id].fork_mutex);
-		// if (dinner->detach)
-		// 	pthread_detach(dinner->philo[id].philosopher);
-		// else
 		pthread_join(dinner->philo[id].philosopher, NULL);
+		if (pthread_mutex_destroy(&dinner->philo[id].fork_mutex))
+			return (printf("philo %d mutex destroy fails\n", (id + 1)));
 		free_mutex(&dinner->philo[id]);
 		id++;
 	}

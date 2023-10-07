@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 14:07:23 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 16:32:05 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	init_philos(t_dinner *dinner)
 	list = NULL;
 	id = 0;
 	n_philos = dinner->args.n_philos;
-	// print_args(&dinner->args, "PHILOS INIT");
 	while (id < n_philos)
 	{
 		dinner->philo[id].args = &dinner->args;
@@ -101,6 +100,5 @@ int	init_data(t_args *data, char *args[])
 	data->t_sleep = ft_atoi(args[4]);
 	if (data->n_must_eat)
 		data->n_must_eat = ft_atoi(args[5]);
-	// print_args(data, "INIT");
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 16:10:13 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 16:55:07 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,13 @@
 
 int	philo_leaves_the_table(t_philo *philo)
 {
-	// pthread_mutex_lock()
+	pthread_mutex_lock(&philo->alert_dead_mutex);
 	if (*philo->alert_end)
 	{
-		// pthread_mutex_unlock()
+		pthread_mutex_unlock(&philo->alert_dead_mutex);
 		return (TRUE);
 	}
+	pthread_mutex_unlock(&philo->alert_dead_mutex);
 	return (FALSE);
 }
 

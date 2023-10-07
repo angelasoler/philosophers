@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 23:11:07 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 10:07:38 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 16:48:00 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void	print_args(t_args *data, const char *where)
 {
 	printf("------------ ARGS %s ---------\n", where);
 	printf("n_philos = %d\n", data->n_philos);
-	printf("t_die = %d\n", data->t_die);
-	printf("t_eat = %d\n", data->t_eat);
-	printf("t_sleep = %d\n", data->t_sleep);
+	printf("t_die = %ld\n", data->t_die);
+	printf("t_eat = %ld\n", data->t_eat);
+	printf("t_sleep = %ld\n", data->t_sleep);
 	if (data->n_must_eat)
 		printf("n_must_eat = %d\n", data->n_must_eat);
 }
