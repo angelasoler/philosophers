@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 14:13:50 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 16:10:13 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,79 +23,54 @@ int	philo_leaves_the_table(t_philo *philo)
 	return (FALSE);
 }
 
-void	philo_think(t_philo *philo)
+int	philo_think(t_philo *philo)
 {
+	if (philo_leaves_the_table(philo))
+		return (1);
 	philo_print_log(philo, THINK);
 	usleep(500);
+	if (philo_leaves_the_table(philo))
+		return (1);
+	return (0);
 }
 
-void	philo_take_first_fork(t_philo *philo)
+int	philo_sleep(t_philo *philo)
 {
-	int		fork;
+	if (philo_leaves_the_table(philo))
+		return (1);
+	philo_print_log(philo, SLEEP);
+	milisec_sleep(philo->args->t_sleep);
+	if (philo_leaves_the_table(philo))
+		return (1);
+	return (0);
+}
 
-	if (philo->id == 1)
+int	philo_take_a_fork(t_philo *philo, int neighboor)
+{
+	if (!neighboor)
 	{
-		while (philo->neighbor->fork == BUSY)
-			continue ;
-		fork = pthread_mutex_lock(&philo->neighbor->fork_mutex);
-		if (!fork)
-		{
-			philo->neighbor->fork = BUSY;
-			philo_print_log(philo, FORK);
-		}
+		pthread_mutex_lock(&philo->fork_mutex);
+		philo->fork = BUSY;
 	}
 	else
 	{
-		while (philo->fork == BUSY)
-			continue ;
-		fork = pthread_mutex_lock(&philo->fork_mutex);
-		if (!fork)
-		{
-			philo->fork = BUSY;
-			philo_print_log(philo, FORK);
-		}
+		pthread_mutex_lock(&philo->neighbor->fork_mutex);
+		philo->neighbor->fork = BUSY;
 	}
+	philo_print_log(philo, FORK);
+	if (philo_leaves_the_table(philo) || philo->args->n_philos == 1)
+	{
+		if (!neighboor)
+			pthread_mutex_unlock(&philo->fork_mutex);
+		else
+			pthread_mutex_unlock(&philo->neighbor->fork_mutex);
+		return (1);
+	}
+	return (0);
 }
 
-void	philo_take_second_fork(t_philo *philo)
+int update_meals_counters(t_philo *philo)
 {
-	int		fork;
-
-	if (philo->id != 1)
-	{
-		while (philo->neighbor->fork == BUSY)
-			continue ;
-		fork = pthread_mutex_lock(&philo->neighbor->fork_mutex);
-		if (!fork)
-		{
-			philo->neighbor->fork = BUSY;
-			philo_print_log(philo, FORK);
-		}
-	}
-	else
-	{
-		while (philo->fork == BUSY)
-			continue ;
-		fork = pthread_mutex_lock(&philo->fork_mutex);
-		if (!fork)
-		{
-			philo->fork = BUSY;
-			philo_print_log(philo, FORK);
-		}
-	}
-}
-
-int	philo_eat(t_philo *philo)
-{
-	philo_print_log(philo, EAT);
-	milisec_sleep(philo->args->t_eat);
-	
-	philo->fork = AVALIBLE;
-	pthread_mutex_unlock(&philo->fork_mutex);
-
-	philo->neighbor->fork = AVALIBLE;
-	pthread_mutex_unlock(&philo->neighbor->fork_mutex);
-	
 	pthread_mutex_lock(&philo->last_meal_mutex);
 	philo->last_meal = gettime_milisec_convertion();
 	pthread_mutex_unlock(&philo->last_meal_mutex);
@@ -113,10 +88,15 @@ int	philo_eat(t_philo *philo)
 	return (0);
 }
 
-void	philo_sleep(t_philo *philo)
+int	philo_eat(t_philo *philo)
 {
-	philo_print_log(philo, SLEEP);
-	milisec_sleep(philo->args->t_sleep);
+	philo_print_log(philo, EAT);
+	milisec_sleep(philo->args->t_eat);
+	philo->fork = AVALIBLE;
+	pthread_mutex_unlock(&philo->fork_mutex);
+	philo->neighbor->fork = AVALIBLE;
+	pthread_mutex_unlock(&philo->neighbor->fork_mutex);
+	return (update_meals_counters(philo));
 }
 
 void	pair_philos_wait(t_philo *philo)
@@ -127,40 +107,21 @@ void	pair_philos_wait(t_philo *philo)
 
 void	set_at_the_table(t_philo *philo)
 {
+	int	neighboor;
+
+	if (philo->id == 1)
+		neighboor = TRUE;
+	else
+		neighboor = FALSE;
 	pair_philos_wait(philo);
 	while (1)
 	{
-		philo_think(philo);
-		if (philo_leaves_the_table(philo))
+		if (philo_think(philo)
+			|| philo_take_a_fork(philo, neighboor)
+			|| philo_take_a_fork(philo, !neighboor)
+			|| philo_eat(philo)
+			|| philo_sleep(philo))
 			return ;
-		//tratameto para 1 philo só
-		// if (philo->args->n_philos == 1)
-		// {
-		// 	philo_take_second_fork(philo);
-		// 	while (!philo_leaves_the_table(philo))
-		// 		usleep(10);
-		// 	philo->fork = AVALIBLE;
-		// 	pthread_mutex_unlock(&philo->fork_mutex);
-		// 	return ;
-		// }
-		/////////////
-		philo_take_first_fork(philo);
-		// if (philo_leaves_the_table(philo))
-		// {
-		// 	//unlock and leave
-		// 	return ;
-		// }
-		philo_take_second_fork(philo);
-		// if (philo_leaves_the_table(philo))
-		// {
-		// 	//unlock and leave
-		// 	return ;
-		// }
-		if (philo_eat(philo))
-			return ;
-		// if (philo_leaves_the_table(philo))
-		// 	return ;
-		philo_sleep(philo);
 	}
 }
 
