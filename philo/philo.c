@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:43 by asoler            #+#    #+#             */
-/*   Updated: 2023/09/25 19:23:57 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 14:12:13 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	main(int argc, char *argv[])
 	t_dinner	*dinner;
 
 	dinner = ft_calloc(1, sizeof(t_dinner));
+	if (!dinner)
+		return (printf("calloc fail\n"));
 	if (argc < 5 || argc > 6)
 		return (printf("Wrong arguments\n"));
 	if (argc < 6)
@@ -24,7 +26,10 @@ int	main(int argc, char *argv[])
 	else
 		dinner->args.n_must_eat = TRUE;
 	if (init_data(&dinner->args, argv))
+	{
+		free(dinner);
 		return (-1);
+	}
 	dinner->detach = init_dinner(dinner);
 	if (dinner->detach < 0)
 		return (printf("init philo fail\n"));

@@ -6,19 +6,28 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 23:13:05 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/03 00:37:53 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 11:29:02 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	gettime_milisec_convertion(void)
+long	gettime_milisec_convertion(void)
 {
 	struct timeval	time_now;
 
 	if (gettimeofday(&time_now, NULL))
 		return (printf("Failed getting time\n"));
 	return ((time_now.tv_sec * 1000) + (time_now.tv_usec / 1000));
+}
+
+void	milisec_sleep(long duration)
+{
+	long	init_timer;
+
+	init_timer = gettime_milisec_convertion();
+	while ((gettime_milisec_convertion() - init_timer) < duration)
+		usleep(10);
 }
 
 void	philo_print_log(t_philo *philo, int state)

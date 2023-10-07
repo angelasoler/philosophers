@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 10:18:51 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 14:07:23 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int	init_data(t_args *data, char *args[])
 	if (verify_data(args))
 		return (printf("invalid arguments\n"));
 	data->n_philos = ft_atoi(args[1]);
+	if (data->n_philos <= 0)
+		return (printf("invalid arguments\n"));
 	data->t_die = ft_atoi(args[2]);
 	data->t_eat = ft_atoi(args[3]);
 	data->t_sleep = ft_atoi(args[4]);

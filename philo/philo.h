@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 10:08:37 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/07 11:29:45 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ typedef enum s_fork
 
 typedef struct s_args
 {
-	int	n_philos;
-	int	t_die;
-	int	t_eat;
-	int	t_sleep;
-	int	n_must_eat;
+	int		n_philos;
+	long	t_die;
+	long	t_eat;
+	long	t_sleep;
+	int		n_must_eat;
 }	t_args;
 
 typedef struct s_philo
@@ -102,7 +102,8 @@ int		verify_data(char **args);
 int		philo_init_mutex(t_philo *philo);
 int		free_mutex(t_philo *philo);
 void	philo_print_log(t_philo *philo, int state);
-int		gettime_milisec_convertion(void);
+long	gettime_milisec_convertion(void);
+void	milisec_sleep(long duration);
 
 void	print_args(t_args *data, const char *where);
 void	print_philo(t_philo *philo, long int last_meal);

@@ -75,18 +75,15 @@ void	*ft_lstiter(void *lst)
 	char	*done_counter;
 	t_list	*aux;
 	int		nphilos;
-	int		*ret;
 
 	aux = (t_list *)lst;
 	nphilos = aux->philo->args->n_philos;
-	ret = ft_calloc(sizeof(int), 1);
 	while (aux)
 	{
 		if (alert_dead(aux->philo))
 		{
 			philo_print_log(aux->philo, DIED);
-			*ret = 1;
-			pthread_exit((void *)ret);
+			return ((void *)0);
 		}
 		else
 			done_counter = verify_philos_state(aux->philo, nphilos);
@@ -95,7 +92,7 @@ void	*ft_lstiter(void *lst)
 			pthread_mutex_lock(&aux->philo->alert_dead_mutex);
 			*aux->philo->alert_end = TRUE;
 			pthread_mutex_unlock(&aux->philo->alert_dead_mutex);
-			pthread_exit((void *)ret);
+			return ((void *)0);
 		}
 		aux = aux->next;
 	}
