@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/08 17:30:13 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 17:54:14 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,15 @@ void	*ft_memset(void *s, int c, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
 
 int		init_data(t_args *data, char *args[]);
-int		init_philos(t_dinner *dinner);
+t_list	*init_philos(t_dinner *dinner);
 int		init_dinner(t_dinner *dinner);
 void	*join_meal(void *arg);
 int		end_dinner(t_dinner *dinner);
+int		create_philosopher(t_philo *philo, t_philo *neighbor, t_dinner *dinner);
+int		create_threads(int n_philos, t_philo *philo);
+t_list	*init_philos(t_dinner *dinner);
+int		init_fork_mutex(t_dinner *dinner, int n_philos);
+int		init_threads(t_dinner *dinner, int n_philo, t_list	*list);
 
 int		alert_dead(t_philo *philo);
 void	*ft_lstiter(void *lst);

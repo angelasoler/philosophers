@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 23:11:07 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 16:48:00 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 17:56:17 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,3 @@ void	print_args(t_args *data, const char *where)
 	if (data->n_must_eat)
 		printf("n_must_eat = %d\n", data->n_must_eat);
 }
-
