@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/07/22 23:21:07 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 11:21:23 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ typedef enum s_state
 {
 	EAT,
 	THINK,
-	SLEEP
+	SLEEP,
+	FORK,
+	DIED
 }	t_state;
 
 typedef enum s_fork
@@ -38,15 +40,16 @@ typedef enum s_fork
 
 typedef struct s_args
 {
-	int	n_philos;
-	int	t_die;
-	int	t_eat;
-	int	t_sleep;
-	int	n_must_eat;
+	int		n_philos;
+	long	t_die;
+	long	t_eat;
+	long	t_sleep;
+	int		n_must_eat;
 }	t_args;
 
 typedef struct s_philo
 {
+	int				*alert_end;
 	pthread_t		philosopher;
 	t_fork			fork;
 	t_state			state;
@@ -55,7 +58,11 @@ typedef struct s_philo
 	int				meal_counter;
 	t_args			*args;
 	pthread_mutex_t	fork_mutex;
-	struct timeval	last_meal;
+	pthread_mutex_t	*print_mutex;
+	pthread_mutex_t	last_meal_mutex;
+	pthread_mutex_t	im_done_mutex;
+	pthread_mutex_t	*alert_end_mutex;
+	int				last_meal;
 	struct s_philo	*neighbor;
 }	t_philo;
 
@@ -67,13 +74,16 @@ typedef struct s_list
 
 typedef struct s_dinner
 {
-	t_args	args;
-	t_philo	*philo;
-	int		detach;
+	pthread_mutex_t	alert_end_mutex;
+	pthread_mutex_t	print_mutex;
+	int				alert_end;
+	t_args			args;
+	t_philo			*philo;
+	pthread_t		monitor_thread;
 }	t_dinner;
 
 t_list	*ft_lstlast(t_list *lst);
-int		alloc_philo_list(t_list **main_list, t_philo *philo, int id);
+int		alloc_philo_list(t_list **main_list, t_philo *philo, int *id);
 
 int		ft_isdigit(char c);
 int		ft_atoi(const char *nptr);
@@ -86,9 +96,17 @@ int		init_dinner(t_dinner *dinner);
 void	*join_meal(void *arg);
 int		end_dinner(t_dinner *dinner);
 
-void	print_philo(t_philo *philo, long int last_meal);
-int		alert_dead(void *arg);
-int		ft_lstiter(t_list *lst, int (f)(void *));
+int		alert_dead(t_philo *philo);
+void	*ft_lstiter(void *lst);
 int		verify_data(char **args);
+
+int		philo_init_mutex(t_philo *philo);
+int		free_mutex(t_philo *philo);
+void	philo_print_log(t_philo *philo, int state);
+long	gettime_milisec_convertion(void);
+void	milisec_sleep(long duration);
+
+void	print_args(t_args *data, const char *where);
+void	print_philo(t_philo *philo, long int last_meal);
 
 #endif

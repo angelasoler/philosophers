@@ -51,7 +51,7 @@ t_list	*ft_lstnew(void	*philo)
 	return (result);
 }
 
-int	alloc_philo_list(t_list **main_list, t_philo *philo, int id)
+int	alloc_philo_list(t_list **main_list, t_philo *philo, int *id)
 {
 	int		n_philos;
 	t_list	*list;
@@ -61,7 +61,7 @@ int	alloc_philo_list(t_list **main_list, t_philo *philo, int id)
 	n_philos = philo->args->n_philos;
 	if (main_list)
 		ft_lstadd_back(&(*main_list), list);
-	if (id == (n_philos - 1))
+	if (*id == (n_philos - 1))
 	{
 		last = ft_lstlast(*main_list);
 		last->next = *main_list;

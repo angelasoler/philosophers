@@ -6,132 +6,145 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/08/29 08:48:33 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 13:27:08 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philo_take_first_fork(t_philo *philo)
+int	philo_leaves_the_table(t_philo *philo)
 {
-	int		fork;
-	t_now	time_now;
-
-	gettimeofday(&time_now, NULL);
-	printf("%ld %d is thinking\n", time_now.tv_usec, philo->id);
-	if (philo->id == 0)
+	pthread_mutex_lock(philo->alert_end_mutex);
+	if (*philo->alert_end)
 	{
-		while (philo->neighbor->fork == BUSY)
-			continue ;
-		fork = pthread_mutex_lock(&philo->neighbor->fork_mutex);
-		if (!fork)
-		{
-			gettimeofday(&time_now, NULL);
-			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
-			philo->neighbor->fork = BUSY;
-		}
+		pthread_mutex_unlock(philo->alert_end_mutex);
+		return (TRUE);
+	}
+	pthread_mutex_unlock(philo->alert_end_mutex);
+	return (FALSE);
+}
+
+int	philo_think(t_philo *philo)
+{
+	if (philo_leaves_the_table(philo))
+		return (1);
+	philo_print_log(philo, THINK);
+	usleep(500);
+	if (philo_leaves_the_table(philo))
+		return (1);
+	return (0);
+}
+
+int	philo_sleep(t_philo *philo)
+{
+	if (philo_leaves_the_table(philo))
+		return (1);
+	philo_print_log(philo, SLEEP);
+	milisec_sleep(philo->args->t_sleep);
+	if (philo_leaves_the_table(philo))
+		return (1);
+	return (0);
+}
+
+int	philo_take_a_fork(t_philo *philo, int neighboor)
+{
+	if (!neighboor)
+	{
+		if (pthread_mutex_lock(&philo->fork_mutex))
+			return (1);
 	}
 	else
 	{
-		while (philo->fork == BUSY)
-			continue ;
-		fork = pthread_mutex_lock(&philo->fork_mutex);
-		if (!fork)
-		{
-			gettimeofday(&time_now, NULL);
-			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
-			philo->fork = BUSY;
-		}
+		if (pthread_mutex_lock(&philo->neighbor->fork_mutex))
+			return (1);
 	}
+	if (philo_leaves_the_table(philo) || philo->args->n_philos == 1)
+	{
+		if (!neighboor)
+			pthread_mutex_unlock(&philo->fork_mutex);
+		else
+			pthread_mutex_unlock(&philo->neighbor->fork_mutex);
+		return (1);
+	}
+	philo_print_log(philo, FORK);
+	return (0);
 }
 
-void	philo_take_second_fork(t_philo *philo)
+int update_meals_counters(t_philo *philo)
 {
-	int		fork;
-	t_now	time_now;
-	
-	gettimeofday(&time_now, NULL);
-	printf("%ld %d is thinking\n", time_now.tv_usec, philo->id);
-	if (philo->id != 0)
-	{
-		while (philo->neighbor->fork == BUSY)
-			continue ;
-		fork = pthread_mutex_lock(&philo->neighbor->fork_mutex);
-		if (!fork)
-		{
-			gettimeofday(&time_now, NULL);
-			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
-			philo->neighbor->fork = BUSY;
-		}
-	}
-	else
-	{
-		while (philo->fork == BUSY)
-			continue ;
-		fork = pthread_mutex_lock(&philo->fork_mutex);
-		if (!fork)
-		{
-			gettimeofday(&time_now, NULL);
-			printf("%ld %d has taken a fork\n", time_now.tv_usec, philo->id);
-			philo->fork = BUSY;
-		}
-	}
-}
-
-int	philo_eat(t_philo *philo)
-{
-	t_now		time_now;
-
-	gettimeofday(&time_now, NULL);
-	printf("%ld %d is eating\n", time_now.tv_usec, philo->id);
-	usleep(philo->args->t_eat);
-	pthread_mutex_unlock(&philo->fork_mutex);
-	pthread_mutex_unlock(&philo->neighbor->fork_mutex);
-	philo->fork = AVALIBLE;
-	philo->neighbor->fork = AVALIBLE;
+	if (philo_leaves_the_table(philo))
+		return (1);
+	pthread_mutex_lock(&philo->last_meal_mutex);
+	philo->last_meal = gettime_milisec_convertion();
+	pthread_mutex_unlock(&philo->last_meal_mutex);
 	if (philo->args->n_must_eat)
 	{
 		philo->meal_counter++;
 		if (philo->meal_counter == philo->args->n_must_eat)
 		{
-			philo->im_done = 1;
-			print_philo(philo, 0);
-			return (1);
+			pthread_mutex_lock(&philo->im_done_mutex);
+			philo->im_done = TRUE;
+			pthread_mutex_unlock(&philo->im_done_mutex);
+			// return (1);
 		}
 	}
 	return (0);
 }
 
-void	philo_sleep(t_philo *philo)
+int	philo_eat(t_philo *philo, int neighboor)
 {
-	t_now	time_now;
+	if (!philo_take_a_fork(philo, neighboor))
+	{
+		if (philo_take_a_fork(philo, !neighboor))
+		{
+			if (philo->id == 1)
+				pthread_mutex_unlock(&philo->neighbor->fork_mutex);
+			else
+				pthread_mutex_unlock(&philo->fork_mutex);
+			return (0);
+		}
+	}
+	else
+		return (0);
+	if (!philo_leaves_the_table(philo))
+	{
+		philo_print_log(philo, EAT);
+		milisec_sleep(philo->args->t_eat);
+	}
+	pthread_mutex_unlock(&philo->fork_mutex);
+	pthread_mutex_unlock(&philo->neighbor->fork_mutex);
+	return (update_meals_counters(philo));
+}
 
-	gettimeofday(&time_now, NULL);
-	printf("%ld %d is sleeping\n", time_now.tv_usec, philo->id);
-	usleep(philo->args->t_sleep);
+void	pair_philos_wait(t_philo *philo)
+{
+	if (!(philo->id % 2))
+		milisec_sleep(35);
 }
 
 void	set_at_the_table(t_philo *philo)
 {
+	int	neighboor;
+
+	if (philo->id == 1)
+		neighboor = TRUE;
+	else
+		neighboor = FALSE;
+	pair_philos_wait(philo);
 	while (1)
 	{
-		philo_take_first_fork(philo);
-		philo_take_second_fork(philo);
-		if (philo_eat(philo))
+		if (philo_think(philo)
+			|| philo_eat(philo, neighboor)
+			|| philo_sleep(philo))
 			return ;
-		philo_sleep(philo);
 	}
 }
 
 void	*join_meal(void	*arg)
 {
-	int			*ret;
 	t_philo		*philo;
 
 	philo = (t_philo *)arg;
-	ret = ft_calloc(sizeof(int), 1);
-	*ret = philo->id;
 	set_at_the_table(philo);
-	pthread_exit((void *)ret);
 	return ((void *)0);
 }
