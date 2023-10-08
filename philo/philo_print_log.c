@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/02 23:13:05 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 19:26:51 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 11:23:48 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	philo_print_log(t_philo *philo, int state)
 	static long	init_timer;
 	long	time_now;
 
-	pthread_mutex_lock(&philo->print_mutex);
+	pthread_mutex_lock(philo->print_mutex);
 	if (!init_timer)
 		init_timer = gettime_milisec_convertion();
 	time_now = gettime_milisec_convertion() - init_timer;
@@ -49,5 +49,5 @@ void	philo_print_log(t_philo *philo, int state)
 		printf("%ld %d has taken a fork\n", time_now, philo->id);
 	else if (state == DIED)
 		printf("%ld %d died\n", time_now, philo->id);
-	pthread_mutex_unlock(&philo->print_mutex);
+	pthread_mutex_unlock(philo->print_mutex);
 }

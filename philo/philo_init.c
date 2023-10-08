@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 20:28:00 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 11:23:40 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	init_philos(t_dinner *dinner)
 		dinner->philo[id].id = id + 1;
 		dinner->philo[id].meal_counter = 0;
 		dinner->philo[id].alert_end_mutex = &dinner->alert_end_mutex;
+		dinner->philo[id].print_mutex = &dinner->print_mutex;
 		neig_id = id + 1;
 		if (neig_id == n_philos)
 			neig_id = 0;
@@ -107,6 +108,7 @@ int	init_dinner(t_dinner *dinner)
 		i++;
 	}
 	pthread_mutex_init(&dinner->alert_end_mutex, NULL);
+	pthread_mutex_init(&dinner->print_mutex, NULL);
 	return (init_philos(dinner));
 }
 

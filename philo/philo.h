@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/07 20:21:13 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 11:21:23 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_philo
 	int				meal_counter;
 	t_args			*args;
 	pthread_mutex_t	fork_mutex;
-	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	*print_mutex;
 	pthread_mutex_t	last_meal_mutex;
 	pthread_mutex_t	im_done_mutex;
 	pthread_mutex_t	*alert_end_mutex;
@@ -75,6 +75,7 @@ typedef struct s_list
 typedef struct s_dinner
 {
 	pthread_mutex_t	alert_end_mutex;
+	pthread_mutex_t	print_mutex;
 	int				alert_end;
 	t_args			args;
 	t_philo			*philo;

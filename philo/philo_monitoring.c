@@ -19,7 +19,7 @@ int	alert_dead(t_philo *philo)
 
 	pthread_mutex_lock(&philo->last_meal_mutex);
 	last_meal_timer = (gettime_milisec_convertion() - philo->last_meal);
-	last_meal = philo->args->t_eat;
+	last_meal = philo->args->t_die;
 	pthread_mutex_unlock(&philo->last_meal_mutex);
 	if (last_meal_timer > last_meal)
 	{
@@ -83,8 +83,8 @@ void	*ft_lstiter(void *lst)
 		if (alert_dead(aux->philo))
 		{
 			philo_print_log(aux->philo, DIED);
-			// free(done_counter);
-			// freelist(aux);
+			if (done_counter)
+				free (done_counter);
 			return ((void *)0);
 		}
 		else
@@ -94,8 +94,6 @@ void	*ft_lstiter(void *lst)
 			pthread_mutex_lock(aux->philo->alert_end_mutex);
 			*aux->philo->alert_end = TRUE;
 			pthread_mutex_unlock(aux->philo->alert_end_mutex);
-			free(done_counter);
-			// freelist(aux);
 			return ((void *)0);
 		}
 		aux = aux->next;
