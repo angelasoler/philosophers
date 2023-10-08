@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/08 12:36:30 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 13:27:08 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int update_meals_counters(t_philo *philo)
 			pthread_mutex_lock(&philo->im_done_mutex);
 			philo->im_done = TRUE;
 			pthread_mutex_unlock(&philo->im_done_mutex);
-			return (1);
+			// return (1);
 		}
 	}
 	return (0);
