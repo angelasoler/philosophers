@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 23:19:18 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/08 11:34:33 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 17:30:08 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,8 @@ int	end_dinner(t_dinner *dinner)
 	while (id < n_philos)
 	{
 		pthread_join(dinner->philo[id].philosopher, NULL);
-		// pthread_mutex_destroy(&dinner->philo[id].fork_mutex);
-		// if (pthread_mutex_destroy(&dinner->philo[id].fork_mutex))
-			// return (printf("philo %d fork mutex destroy fails\n", (id + 1)));
+		if (pthread_mutex_destroy(&dinner->philo[id].fork_mutex))
+			return (printf("philo %d fork mutex destroy fails\n", (id + 1)));
 		free_mutex(&dinner->philo[id]);
 		id++;
 	}
@@ -35,25 +34,19 @@ int	end_dinner(t_dinner *dinner)
 	return (0);
 }
 
-void	ft_lstdelone(t_list *lst, void (*del)(void*))
+void	freelist(t_list *head)
 {
-	del(lst->philo);
-	free(lst);
-}
+	t_list *current;
+	t_list *start;
+	t_list *next;
 
-void	ft_lstclear(t_list **lst)
-{
-	t_list	*aux;
-	t_list	*aux1;
-
-	aux = *lst;
-	aux1 = *lst;
-	while (aux1)
+	current = head;
+	start = head;
+	while (current->next != start)
 	{
-		aux->philo = NULL;
-		aux1 = aux->next;
-		free(aux);
-		aux = aux1;
+		next = current->next;
+		free(current);
+		current = next;
 	}
-	*lst = NULL;
+	free(current);
 }

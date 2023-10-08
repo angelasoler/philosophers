@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:34 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/08 11:21:23 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 17:30:13 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,12 @@ void	milisec_sleep(long duration);
 
 void	print_args(t_args *data, const char *where);
 void	print_philo(t_philo *philo, long int last_meal);
+
+void	pair_philos_wait(t_philo *philo);
+int		update_meals_counters(t_philo *philo);
+int		philo_leaves_the_table(t_philo *philo);
+int		philo_think(t_philo *philo);
+
+void	freelist(t_list *head);
 
 #endif
