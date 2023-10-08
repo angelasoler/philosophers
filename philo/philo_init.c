@@ -6,14 +6,19 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:48:21 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/08 11:23:40 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 16:47:47 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	create_philosopher(t_philo *philo, t_philo *neighbor)
+int	create_philosopher(t_philo *philo, t_philo *neighbor, t_dinner *dinner)
 {
+	philo->args = &dinner->args;
+	philo->alert_end = &dinner->alert_end;
+	philo->meal_counter = 0;
+	philo->alert_end_mutex = &dinner->alert_end_mutex;
+	philo->print_mutex = &dinner->print_mutex;
 	philo->last_meal = gettime_milisec_convertion();
 	philo->neighbor = neighbor;
 	return (0);
@@ -39,23 +44,6 @@ int	create_threads(int n_philos, t_philo *philo)
 	return (ret);
 }
 
-void	freelist(t_list *head)
-{
-	t_list *current;
-	t_list *start;
-	t_list *next;
-
-	current = head;
-	start = head;
-	while (current->next != start)
-	{
-		next = current->next;
-		free(current);
-		current = next;
-	}
-	free(current);
-}
-
 int	init_philos(t_dinner *dinner)
 {
 	int		id;
@@ -68,16 +56,11 @@ int	init_philos(t_dinner *dinner)
 	n_philos = dinner->args.n_philos;
 	while (id < n_philos)
 	{
-		dinner->philo[id].args = &dinner->args;
-		dinner->philo[id].alert_end = &dinner->alert_end;
 		dinner->philo[id].id = id + 1;
-		dinner->philo[id].meal_counter = 0;
-		dinner->philo[id].alert_end_mutex = &dinner->alert_end_mutex;
-		dinner->philo[id].print_mutex = &dinner->print_mutex;
 		neig_id = id + 1;
 		if (neig_id == n_philos)
 			neig_id = 0;
-		if (create_philosopher(&dinner->philo[id], &dinner->philo[neig_id]))
+		if (create_philosopher(&dinner->philo[id], &dinner->philo[neig_id], dinner))
 			return (-1);
 		alloc_philo_list(&list, &dinner->philo[id], &id);
 		id++;

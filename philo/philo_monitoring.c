@@ -45,8 +45,8 @@ char	verify_philos_state(t_philo *philo)
 
 int	philo_everybodys_done(char **done_counter, int nphilo)
 {
-	int	i;
-	int	cnt_true;
+	int		i;
+	int		cnt_true;
 	char	*aux;
 
 	i = 0;
@@ -66,34 +66,41 @@ int	philo_everybodys_done(char **done_counter, int nphilo)
 	return (0);
 }
 
-void	*ft_lstiter(void *lst)
+int	it_should_end(t_philo *philo, int philo_idx, int nphilos)
 {
 	char	*done_counter;
+
+	done_counter = ft_calloc(nphilos + 1, sizeof(char));
+	if (alert_dead(philo))
+	{
+		philo_print_log(philo, DIED);
+		free (done_counter);
+		return (1);
+	}
+	done_counter[philo_idx] = verify_philos_state(philo);
+	if (philo_everybodys_done(&done_counter, nphilos))
+	{
+		pthread_mutex_lock(philo->alert_end_mutex);
+		*philo->alert_end = TRUE;
+		pthread_mutex_unlock(philo->alert_end_mutex);
+		return (1);
+	}
+	return (0);
+}
+
+void	*ft_lstiter(void *lst)
+{
 	t_list	*aux;
 	int		nphilos;
 	int		i;
 
 	aux = (t_list *)lst;
 	nphilos = aux->philo->args->n_philos;
-	done_counter = ft_calloc(nphilos + 1, sizeof(char));
 	i = 0;
 	while (aux)
 	{
-		if (alert_dead(aux->philo))
-		{
-			philo_print_log(aux->philo, DIED);
-			if (done_counter)
-				free (done_counter);
+		if (it_should_end(aux->philo, i, nphilos))
 			return ((void *)0);
-		}
-		done_counter[i] = verify_philos_state(aux->philo);
-		if (philo_everybodys_done(&done_counter, nphilos))
-		{
-			pthread_mutex_lock(aux->philo->alert_end_mutex);
-			*aux->philo->alert_end = TRUE;
-			pthread_mutex_unlock(aux->philo->alert_end_mutex);
-			return ((void *)0);
-		}
 		aux = aux->next;
 		i++;
 		if (i == nphilos)
