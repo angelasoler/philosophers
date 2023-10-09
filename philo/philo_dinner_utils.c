@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 16:11:46 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/08 17:56:44 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 20:59:14 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void	pair_philos_wait(t_philo *philo)
 
 int	update_meals_counters(t_philo *philo)
 {
-	if (philo_leaves_the_table(philo))
-		return (1);
 	pthread_mutex_lock(&philo->last_meal_mutex);
 	philo->last_meal = gettime_milisec_convertion();
 	pthread_mutex_unlock(&philo->last_meal_mutex);

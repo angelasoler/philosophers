@@ -14,14 +14,14 @@
 
 int	alert_dead(t_philo *philo)
 {
-	int	last_meal;
+	int	eat_or_die;
 	int	last_meal_timer;
 
 	pthread_mutex_lock(&philo->last_meal_mutex);
 	last_meal_timer = (gettime_milisec_convertion() - philo->last_meal);
-	last_meal = philo->args->t_die;
+	eat_or_die = philo->args->t_die;
 	pthread_mutex_unlock(&philo->last_meal_mutex);
-	if (last_meal_timer > last_meal)
+	if (last_meal_timer > eat_or_die)
 	{
 		pthread_mutex_lock(philo->alert_end_mutex);
 		*philo->alert_end = TRUE;
