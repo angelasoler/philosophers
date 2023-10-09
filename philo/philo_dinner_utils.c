@@ -53,7 +53,7 @@ int	philo_think(t_philo *philo)
 	if (philo_leaves_the_table(philo))
 		return (1);
 	philo_print_log(philo, THINK);
-	usleep(500);
+	usleep(250);
 	if (philo_leaves_the_table(philo))
 		return (1);
 	return (0);

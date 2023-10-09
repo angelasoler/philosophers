@@ -49,7 +49,7 @@ int	philo_take_a_fork(t_philo *philo, int neighboor)
 
 int	philo_eat(t_philo *philo, int neighboor)
 {
-	if (!philo_take_a_fork(philo, neighboor))
+	if (!philo_leaves_the_table(philo) && !philo_take_a_fork(philo, neighboor))
 	{
 		if (philo_take_a_fork(philo, !neighboor))
 		{
