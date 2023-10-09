@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 00:49:14 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/08 21:09:06 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/08 21:24:43 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	philo_eat(t_philo *philo, int neighboor)
 		return (0);
 	if (!philo_leaves_the_table(philo))
 	{
-		update_meals_counters(philo);	
+		update_meals_counters(philo);
 		philo_print_log(philo, EAT);
 		milisec_sleep(philo->args->t_eat);
 	}
