@@ -61,7 +61,6 @@ int	philo_everybodys_done(char **done_counter, int nphilo, t_philo *philo)
 	}
 	if (cnt_true == nphilo)
 	{
-		free(aux);
 		pthread_mutex_lock(philo->alert_end_mutex);
 		*philo->alert_end = TRUE;
 		pthread_mutex_unlock(philo->alert_end_mutex);
@@ -84,16 +83,16 @@ void	*ft_lstiter(void *lst)
 	while (aux)
 	{
 		if (alert_dead(aux->philo))
-			free (done_counter);
+			break ;
 		done_counter[i] = verify_philos_state(aux->philo);
 		philo_everybodys_done(&done_counter, nphilos, aux->philo);
 		if (*aux->philo->alert_end)
-			return ((void *)0);
+			break ;
 		aux = aux->next;
 		i++;
 		if (i == nphilos)
 			i = 0;
 	}
-	printf("circle linked list fail\n");
-	exit(1);
+	free (done_counter);
+	return ((void *)0);
 }

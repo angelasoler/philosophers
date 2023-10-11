@@ -6,7 +6,7 @@
 /*   By: asoler <asoler@student.42sp.org.br>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/08 16:11:46 by asoler            #+#    #+#             */
-/*   Updated: 2023/10/08 20:59:14 by asoler           ###   ########.fr       */
+/*   Updated: 2023/10/10 21:30:13 by asoler           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	pair_philos_wait(t_philo *philo)
 {
 	if (!(philo->id % 2))
-		milisec_sleep(35);
+		usleep(35);
 }
 
 int	update_meals_counters(t_philo *philo)
